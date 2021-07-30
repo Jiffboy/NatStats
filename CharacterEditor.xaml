@@ -5,62 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="CharacterEditor" Height="450" Width="327">
-    <Grid Width="400" Height="400" VerticalAlignment="Top" HorizontalAlignment="Left">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
+        Title="CharacterEditor" Height="339" Width="243">
 
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <TextBlock Text="Name" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Name"/>
-        </StackPanel>
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock" x:Key="TextStyle">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="Width" Value="100"/>
+            </Style>
+            <Style TargetType="TextBox" x:Key="TextBoxStyle">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Width" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="StackPanel" x:Key="StackPanelStyle">
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
 
-        <StackPanel  Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="Class" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <ComboBox ItemsSource="{Binding ClassList}" VerticalAlignment="Top" x:Name="Class"/>
-        </StackPanel>
+    <Viewbox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <TextBlock Text="Strength" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Strength"/>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Name" Style="{StaticResource TextStyle}"/>
+                <TextBox x:Name="Name" Style="{StaticResource TextBoxStyle}" Width="150"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="Dexterity" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Dexterity"/>
-        </StackPanel>
+            <StackPanel  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Class" Style="{StaticResource TextStyle}"/>
+                <ComboBox ItemsSource="{Binding ClassList}" Width="150" VerticalAlignment="Top" x:Name="Class"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="0">
-            <TextBlock Text="Constitution" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Constitution"/>
-        </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Strength" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Strength" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="Intelligence" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Intelligence"/>
-        </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="1" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Dexterity" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Dexterity" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" Grid.Column="0">
-            <TextBlock Text="Wisdom" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Wisdom"/>
-        </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Constitution" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Constitution" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" Grid.Column="1">
-            <TextBlock Text="Charisma" TextWrapping="Wrap"  VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <TextBox Text="0" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="Charisma"/>
-        </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Intelligence" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Intelligence" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
 
-        <Button Content="Save" Grid.Row="4" Grid.Column="2" Click="CharacterSave_Click"/>
+            <StackPanel Grid.Row="4" Grid.Column="0" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Wisdom" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Wisdom" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
 
-    </Grid>
+            <StackPanel Grid.Row="4" Grid.Column="1" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Charisma" Style="{StaticResource TextStyle}"/>
+                <TextBox Text="0" x:Name="Charisma" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
+
+            <Button Content="Save" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterSave_Click"/>
+
+        </Grid>
+    </Viewbox>
 </Window>
