@@ -32,5 +32,11 @@ namespace NatStats
             CharacterViewModel character = e.AddedItems[0] as CharacterViewModel;
             mvm.SetSelectedCharacter(character);
         }
+
+        private void NewCharacter_Click(object sender, RoutedEventArgs e)
+        {
+            Window window = new CharacterEditor(this.DataContext as MainViewModel);
+            window.Show();
+        }
     }
 }

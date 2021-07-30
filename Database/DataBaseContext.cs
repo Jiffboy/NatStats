@@ -31,6 +31,18 @@ namespace NatStats.Database
                 entity.Property(e => e.CampaignId).IsRequired();
 
                 entity.Property(e => e.ClassId);
+
+                entity.Property(e => e.Strength).IsRequired();
+
+                entity.Property(e => e.Dexterity).IsRequired();
+
+                entity.Property(e => e.Constitution).IsRequired();
+
+                entity.Property(e => e.Intelligence).IsRequired();
+
+                entity.Property(e => e.Wisdom).IsRequired();
+
+                entity.Property(e => e.Charisma).IsRequired();
             });
 
             modelBuilder.Entity<Campaign>(entity =>

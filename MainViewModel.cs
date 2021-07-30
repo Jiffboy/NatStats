@@ -12,16 +12,35 @@ namespace NatStats
     {
         public ObservableCollection<CharacterViewModel> Characters { get; private set; }
 
+        public ObservableCollection<CampaignViewModel> Campaigns { get; private set; }
+
         public CharacterViewModel SelectedCharacter { get; private set; }
+
+        public CampaignViewModel SelectedCampaign { get; private set; }
+
+        public ObservableCollection<String> ClassList { get; private set; }
 
         private DataBaseContext _database;
 
-        private uint _selectedCampaign;
-
         public MainViewModel()
         {
-            _selectedCampaign = 1;
             _database = new DataBaseContext();
+            Campaigns = new ObservableCollection<CampaignViewModel>();
+            ClassList = new ObservableCollection<string>();
+
+            var campaigns = _database.Campaign.ToList();
+            foreach (var campaign in campaigns)
+            {
+                Campaigns.Add(new CampaignViewModel(campaign.Name, campaign.Id));
+            }
+            SelectedCampaign = Campaigns.First(); // temporary
+
+            var classes = _database.Class.ToList();
+            foreach(var clss in classes)
+            {
+                ClassList.Add(clss.Name);
+            }
+
             UpdateCampaignCharacters();
         }
 
@@ -45,11 +64,10 @@ namespace NatStats
         private void UpdateCampaignCharacters()
         {
             this.Characters = new ObservableCollection<CharacterViewModel>();
-            var characters = _database.Character.Where(c => c.CampaignId == _selectedCampaign).ToList();
+            var characters = _database.Character.Where(c => c.CampaignId == SelectedCampaign.Id).ToList();
             foreach(var character in characters)
             {
-                var charClass = _database.Class.Where(c => c.Id == character.ClassId).FirstOrDefault();
-                this.Characters.Add(new CharacterViewModel(character.Name, charClass.Name));
+                this.Characters.Add(new CharacterViewModel(character));
             }
         }
     }
