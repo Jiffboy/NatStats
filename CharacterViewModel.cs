@@ -9,21 +9,8 @@ namespace NatStats
 {
     public class CharacterViewModel : INotifyPropertyChanged
     {
-        public CharacterViewModel(Character character)
-        {
-            var db = new DataBaseContext();
-            _name = character.Name;
-            _class = db.Class.Where(c => c.Id == character.ClassId).FirstOrDefault().Name;
-
-            _strength = character.Strength;
-            _dexterity = character.Dexterity;
-            _constitution = character.Constitution;
-            _intelligence = character.Intelligence;
-            _wisdom = character.Wisdom;
-            _charisma = character.Charisma;
-        }
-
         private String _name;
+        private uint _id;
         private String _class;
 
         private int _strength;
@@ -32,6 +19,26 @@ namespace NatStats
         private int _intelligence;
         private int _wisdom;
         private int _charisma;
+
+        public CharacterViewModel(Character character)
+        {
+            UpdateFromDb(character);
+        }
+
+        public void UpdateFromDb(Character character)
+        {
+            var db = new DataBaseContext();
+            Name = character.Name;
+            Id = character.Id;
+            Class = db.Class.Where(c => c.Id == character.ClassId).FirstOrDefault().Name;
+
+            Strength = character.Strength;
+            Dexterity = character.Dexterity;
+            Constitution = character.Constitution;
+            Intelligence = character.Intelligence;
+            Wisdom = character.Wisdom;
+            Charisma = character.Charisma;
+        }
 
         public String Name
         {
@@ -45,6 +52,22 @@ namespace NatStats
                 {
                     _name = value;
                     OnPropertyChanged("Name");
+                }
+            }
+        }
+
+        public uint Id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                if (Id != value)
+                {
+                    _id = value;
+                    OnPropertyChanged("Id");
                 }
             }
         }

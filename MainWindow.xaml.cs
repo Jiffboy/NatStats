@@ -35,8 +35,20 @@ namespace NatStats
 
         private void NewCharacter_Click(object sender, RoutedEventArgs e)
         {
-            Window window = new CharacterEditor(this.DataContext as MainViewModel);
+            var mvm = this.DataContext as MainViewModel;
+            Window window = new CharacterEditor(this.DataContext as MainViewModel, mvm.SelectedCampaign.Id);
             window.Show();
+        }
+
+        private void CharacterTab_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if( e.ChangedButton == MouseButton.Right)
+            {
+                var charVM = ((sender as TextBlock).DataContext as CharacterViewModel);
+                var mvm = this.DataContext as MainViewModel;
+                Window window = new CharacterEditor(this.DataContext as MainViewModel, mvm.SelectedCampaign.Id, charVM.Id);
+                window.Show();
+            }
         }
     }
 }
