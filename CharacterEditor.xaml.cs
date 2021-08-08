@@ -20,71 +20,78 @@ namespace NatStats
     public partial class CharacterEditor : Window
     {
         private uint _campaignId;
-        private uint _id;
+        private MainViewModel _mvm;
+        private CharacterViewModel _charVM;
+        private bool _newChar;
 
         public CharacterEditor(MainViewModel context, uint campaignId, uint characterId = 0)
         {
-            this.DataContext = context;
+            _mvm = context;
+            _newChar = false;
+            this.DataContext = _mvm.Characters.Where(c => c.Id == characterId).FirstOrDefault();
+            
+            if(this.DataContext == null)
+            {
+                this.DataContext = new CharacterViewModel(characterId);
+                _newChar = true;
+            }
+            _charVM = this.DataContext as CharacterViewModel;
             _campaignId = campaignId;
-            _id = characterId;
             InitializeComponent();
 
-            if(characterId != 0)
+            var db = new DataBaseContext();
+            var character = db.Character.Where(c => c.Id == characterId).FirstOrDefault();
+            if(character != null)
             {
-                var db = new DataBaseContext();
-                var character = db.Character.Where(c => c.Id == characterId).FirstOrDefault();
-                if(character != null)
-                {
-                    Name.Text = character.Name;
-                    Class.SelectedIndex = (int)(character.ClassId - 1);
-                    Strength.Text = character.Strength.ToString();
-                    Dexterity.Text = character.Dexterity.ToString();
-                    Constitution.Text = character.Constitution.ToString();
-                    Intelligence.Text = character.Intelligence.ToString();
-                    Wisdom.Text = character.Wisdom.ToString();
-                    Charisma.Text = character.Charisma.ToString();
-                }
+                CharName.Text = character.Name;
+                Class.SelectedIndex = (int)(character.ClassId - 1);
+                Strength.Text = character.Strength.ToString();
+                Dexterity.Text = character.Dexterity.ToString();
+                Constitution.Text = character.Constitution.ToString();
+                Intelligence.Text = character.Intelligence.ToString();
+                Wisdom.Text = character.Wisdom.ToString();
+                Charisma.Text = character.Charisma.ToString();
             }
         }
 
         private void CharacterSave_Click(object sender, RoutedEventArgs e)
         {
-            var mvm = this.DataContext as MainViewModel;
-            var db = new DataBaseContext();
-            Character character;
-
-            if(_id != 0)
+            if(_newChar)
             {
-                character = db.Character.Where(c => c.Id == _id).FirstOrDefault();
-            }
-            else
-            {
-                character = new Character();
+                _mvm.Characters.Add(this.DataContext as CharacterViewModel);
             }
 
-            character.Name = Name.Text;
-            character.CampaignId = _campaignId;
-            character.ClassId = (uint)Class.SelectedIndex + 1;
-            character.Strength = Convert.ToInt32(Strength.Text);
-            character.Dexterity = Convert.ToInt32(Dexterity.Text);
-            character.Constitution = Convert.ToInt32(Constitution.Text);
-            character.Intelligence = Convert.ToInt32(Intelligence.Text);
-            character.Wisdom = Convert.ToInt32(Wisdom.Text);
-            character.Charisma = Convert.ToInt32(Charisma.Text);
+            _charVM.Name = CharName.Text;
+            //_charVM.CampaignId = _campaignId;
+            _charVM.ClassId = (uint)Class.SelectedIndex + 1;
+            _charVM.Strength = Convert.ToInt32(Strength.Text);
+            _charVM.Dexterity = Convert.ToInt32(Dexterity.Text);
+            _charVM.Constitution = Convert.ToInt32(Constitution.Text);
+            _charVM.Intelligence = Convert.ToInt32(Intelligence.Text);
+            _charVM.Wisdom = Convert.ToInt32(Wisdom.Text);
+            _charVM.Charisma = Convert.ToInt32(Charisma.Text);
 
-            if (_id != 0)
-            {
-                var charVM = mvm.Characters.Where(c => c.Id == _id).FirstOrDefault();
-                charVM.UpdateFromDb(character);
-            }
-            else
-            {
-                db.Add(character);
-                mvm.Characters.Add(new CharacterViewModel(character));
-            }
+            _charVM.SaveToDb();
 
-            db.SaveChanges();
             this.Close();
+        }
+
+        private void CharacterCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void ProficiencyAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var skill = Skill_ComboBox.SelectedItem as Skill;
+            _charVM.AddProficiency(skill);
+        }
+
+        private void ProficiencyRemove_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var skill = button.CommandParameter as Skill;
+            _charVM.RemoveProficiency(skill);
         }
     }
 }

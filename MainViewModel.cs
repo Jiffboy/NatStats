@@ -18,15 +18,13 @@ namespace NatStats
 
         public CampaignViewModel SelectedCampaign { get; private set; }
 
-        public ObservableCollection<String> ClassList { get; private set; }
-
         private DataBaseContext _database;
 
         public MainViewModel()
         {
             _database = new DataBaseContext();
             Campaigns = new ObservableCollection<CampaignViewModel>();
-            ClassList = new ObservableCollection<string>();
+            
 
             var campaigns = _database.Campaign.ToList();
             foreach (var campaign in campaigns)
@@ -34,12 +32,6 @@ namespace NatStats
                 Campaigns.Add(new CampaignViewModel(campaign.Name, campaign.Id));
             }
             SelectedCampaign = Campaigns.First(); // temporary
-
-            var classes = _database.Class.ToList();
-            foreach(var clss in classes)
-            {
-                ClassList.Add(clss.Name);
-            }
 
             UpdateCampaignCharacters();
         }
@@ -67,7 +59,7 @@ namespace NatStats
             var characters = _database.Character.Where(c => c.CampaignId == SelectedCampaign.Id).ToList();
             foreach(var character in characters)
             {
-                this.Characters.Add(new CharacterViewModel(character));
+                this.Characters.Add(new CharacterViewModel(character.Id));
             }
         }
     }

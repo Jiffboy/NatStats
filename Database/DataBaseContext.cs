@@ -11,6 +11,8 @@ namespace NatStats.Database
         public virtual DbSet<Character> Character { get; set; }
         public virtual DbSet<Campaign> Campaign { get; set; }
         public virtual DbSet<Class> Class { get; set; }
+        public virtual DbSet<Proficiency> Proficiency { get; set; }
+        public virtual DbSet<Skill> Skill { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -57,6 +59,22 @@ namespace NatStats.Database
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<Proficiency>(entity =>
+            {
+                entity.HasKey(entity => entity.CharacterId);
+
+                entity.HasKey(entity => entity.SkillId);
+            });
+
+            modelBuilder.Entity<Skill>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.Name).IsRequired();
+
+                entity.Property(entity => entity.Base).IsRequired();
             });
 
             OnModelCreatingPartial(modelBuilder);

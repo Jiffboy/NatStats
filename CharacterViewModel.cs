@@ -4,53 +4,99 @@ using System.Text;
 using System.ComponentModel;
 using NatStats.Database;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace NatStats
 {
     public class CharacterViewModel : INotifyPropertyChanged
     {
-        private String _name;
-        private uint _id;
-        private String _class;
+        public ObservableCollection<Class> ClassList { get; private set; }
+        public ObservableCollection<Skill> SkillList { get; private set; }
+        public ObservableCollection<Skill> ProficiencyList { get; private set; }
 
-        private int _strength;
-        private int _dexterity;
-        private int _constitution;
-        private int _intelligence;
-        private int _wisdom;
-        private int _charisma;
+        private Character _character;
+        private DataBaseContext _database;
 
-        public CharacterViewModel(Character character)
+        public CharacterViewModel(uint characterId)
         {
-            UpdateFromDb(character);
+            _database = new DataBaseContext();
+            ClassList = new ObservableCollection<Class>();
+            SkillList = new ObservableCollection<Skill>();
+            ProficiencyList = new ObservableCollection<Skill>();
+
+            _character = _database.Character.Where(c => c.Id == characterId).FirstOrDefault();
+            if (_character == null)
+            {
+                _character = new Character();
+            }
+
+            var classes = _database.Class.ToList();
+            foreach (var clss in classes)
+            {
+                ClassList.Add(clss);
+            }
+
+            var skills = _database.Skill.ToList();
+            foreach (var skill in skills)
+            {
+                SkillList.Add(skill);
+            }
+
+            var proficiencies = _database.Proficiency.Where(p => p.CharacterId == characterId).ToList();
+            foreach (var proficiency in proficiencies)
+            {
+                var skill = _database.Skill.Where(s => s.Id == proficiency.SkillId).FirstOrDefault();
+                AddProficiency(skill);
+            }
         }
 
-        public void UpdateFromDb(Character character)
+        public void SaveToDb()
         {
-            var db = new DataBaseContext();
-            Name = character.Name;
-            Id = character.Id;
-            Class = db.Class.Where(c => c.Id == character.ClassId).FirstOrDefault().Name;
+            var proficiencies = _database.Proficiency.Where(p => p.CharacterId == _character.Id).ToList();
 
-            Strength = character.Strength;
-            Dexterity = character.Dexterity;
-            Constitution = character.Constitution;
-            Intelligence = character.Intelligence;
-            Wisdom = character.Wisdom;
-            Charisma = character.Charisma;
+            // Clear out and reset proficiencies so we don't have to worry about duplicates
+            foreach(var proficiency in proficiencies)
+            {
+                _database.Remove(proficiency);
+            }
+
+            foreach(var skill in ProficiencyList)
+            {
+                _database.Add(new Proficiency { CharacterId = _character.Id, SkillId = skill.Id });
+            }
+
+            _database.SaveChanges();
+        }
+
+        public void AddProficiency(Skill skill)
+        {
+            if (skill != null && !ProficiencyList.Contains(skill))
+            {
+                ProficiencyList.Add(skill);
+                SkillList.Remove(skill);
+            }
+        }
+
+        public void RemoveProficiency(Skill skill)
+        {
+            if(skill != null && ProficiencyList.Contains(skill))
+            {
+                ProficiencyList.Remove(skill);
+                SkillList.Add(skill);
+            }
         }
 
         public String Name
         {
             get
             {
-                return _name;
+                return _character.Name;
             }
             set
             {
                 if(Name != value)
                 {
-                    _name = value;
+                    _character.Name = value;
                     OnPropertyChanged("Name");
                 }
             }
@@ -60,30 +106,30 @@ namespace NatStats
         {
             get
             {
-                return _id;
+                return _character.Id;
             }
             set
             {
                 if (Id != value)
                 {
-                    _id = value;
+                    _character.Id = value;
                     OnPropertyChanged("Id");
                 }
             }
         }
 
-        public String Class
+        public uint ClassId
         {
             get
             {
-                return _class ;
+                return _character.ClassId;
             }
             set
             {
-                if (Class != value)
+                if (ClassId != value)
                 {
-                    _class = value;
-                    OnPropertyChanged("Class");
+                    _character.ClassId = value;
+                    OnPropertyChanged("ClassId");
                 }
             }
         }
@@ -92,13 +138,13 @@ namespace NatStats
         {
             get
             {
-                return _strength;
+                return _character.Strength;
             }
             set
             {
                 if (Strength != value)
                 {
-                    _strength = value;
+                    _character.Strength = value;
                     OnPropertyChanged("Strength");
                 }
             }
@@ -107,13 +153,13 @@ namespace NatStats
         {
             get
             {
-                return _dexterity;
+                return _character.Dexterity;
             }
             set
             {
                 if (Dexterity != value)
                 {
-                    _dexterity = value;
+                    _character.Dexterity = value;
                     OnPropertyChanged("Dexterity");
                 }
             }
@@ -123,13 +169,13 @@ namespace NatStats
         {
             get
             {
-                return _constitution;
+                return _character.Constitution;
             }
             set
             {
                 if (Constitution != value)
                 {
-                    _constitution = value;
+                    _character.Constitution = value;
                     OnPropertyChanged("Constitution");
                 }
             }
@@ -139,13 +185,13 @@ namespace NatStats
         {
             get
             {
-                return _intelligence;
+                return _character.Intelligence;
             }
             set
             {
                 if (Intelligence != value)
                 {
-                    _intelligence = value;
+                    _character.Intelligence = value;
                     OnPropertyChanged("Intelligence");
                 }
             }
@@ -155,13 +201,13 @@ namespace NatStats
         {
             get
             {
-                return _wisdom;
+                return _character.Wisdom;
             }
             set
             {
                 if (Wisdom != value)
                 {
-                    _wisdom = value;
+                    _character.Wisdom = value;
                     OnPropertyChanged("Wisdom");
                 }
             }
@@ -171,13 +217,13 @@ namespace NatStats
         {
             get
             {
-                return _charisma;
+                return _character.Charisma;
             }
             set
             {
                 if (Charisma != value)
                 {
-                    _charisma = value;
+                    _character.Charisma = value;
                     OnPropertyChanged("Charisma");
                 }
             }
