@@ -30,7 +30,7 @@ namespace NatStats
         {
             MainViewModel mvm = DataContext as MainViewModel;
             CharacterViewModel character = e.AddedItems[0] as CharacterViewModel;
-            mvm.SetSelectedCharacter(character);
+            mvm.SelectedCharacter = character;
         }
 
         private void NewCharacter_Click(object sender, RoutedEventArgs e)

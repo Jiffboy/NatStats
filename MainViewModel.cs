@@ -14,9 +14,11 @@ namespace NatStats
 
         public ObservableCollection<CampaignViewModel> Campaigns { get; private set; }
 
-        public CharacterViewModel SelectedCharacter { get; private set; }
+        public ObservableCollection<Skill> Skills { get; private set; }
 
         public CampaignViewModel SelectedCampaign { get; private set; }
+
+        private CharacterViewModel _selectedCharacter;
 
         private DataBaseContext _database;
 
@@ -24,6 +26,7 @@ namespace NatStats
         {
             _database = new DataBaseContext();
             Campaigns = new ObservableCollection<CampaignViewModel>();
+            Skills = new ObservableCollection<Skill>();
             
 
             var campaigns = _database.Campaign.ToList();
@@ -33,13 +36,29 @@ namespace NatStats
             }
             SelectedCampaign = Campaigns.First(); // temporary
 
+            var skills = _database.Skill.ToList();
+            foreach (var skill in skills)
+            {
+                Skills.Add(skill);
+            }
+
             UpdateCampaignCharacters();
         }
 
-        public void SetSelectedCharacter(CharacterViewModel character)
+        public CharacterViewModel SelectedCharacter
         {
-            SelectedCharacter = character;
-            OnPropertyChanged("SelectedCharacter");
+            get
+            {
+                return _selectedCharacter;
+            }
+            set
+            {
+                if (SelectedCharacter != value)
+                {
+                    _selectedCharacter = value;
+                    OnPropertyChanged("SelectedCharacter");
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -61,6 +80,7 @@ namespace NatStats
             {
                 this.Characters.Add(new CharacterViewModel(character.Id));
             }
+            SelectedCharacter = this.Characters[0];
         }
     }
 }

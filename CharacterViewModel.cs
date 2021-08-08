@@ -11,7 +11,7 @@ namespace NatStats
     public class CharacterViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<Class> ClassList { get; private set; }
-        public ObservableCollection<Skill> SkillList { get; private set; }
+        public ObservableCollection<Skill> UnusedSkillList { get; private set; }
         public ObservableCollection<Skill> ProficiencyList { get; private set; }
 
         private Character _character;
@@ -21,7 +21,7 @@ namespace NatStats
         {
             _database = new DataBaseContext();
             ClassList = new ObservableCollection<Class>();
-            SkillList = new ObservableCollection<Skill>();
+            UnusedSkillList = new ObservableCollection<Skill>();
             ProficiencyList = new ObservableCollection<Skill>();
 
             _character = _database.Character.Where(c => c.Id == characterId).FirstOrDefault();
@@ -39,7 +39,7 @@ namespace NatStats
             var skills = _database.Skill.ToList();
             foreach (var skill in skills)
             {
-                SkillList.Add(skill);
+                UnusedSkillList.Add(skill);
             }
 
             var proficiencies = _database.Proficiency.Where(p => p.CharacterId == characterId).ToList();
@@ -73,7 +73,7 @@ namespace NatStats
             if (skill != null && !ProficiencyList.Contains(skill))
             {
                 ProficiencyList.Add(skill);
-                SkillList.Remove(skill);
+                UnusedSkillList.Remove(skill);
             }
         }
 
@@ -82,7 +82,30 @@ namespace NatStats
             if(skill != null && ProficiencyList.Contains(skill))
             {
                 ProficiencyList.Remove(skill);
-                SkillList.Add(skill);
+                UnusedSkillList.Add(skill);
+            }
+        }
+
+        // Returns the associated stat from the shorthand for the base stats
+        public int ValueFromShorthand(string abr)
+        {
+            abr = abr.ToLower();
+            switch(abr)
+            {
+                case "str":
+                    return Strength;
+                case "dex":
+                    return Dexterity;
+                case "con":
+                    return Constitution;
+                case "int":
+                    return Intelligence;
+                case "wis":
+                    return Wisdom;
+                case "cha":
+                    return Charisma;
+                default:
+                    return 0;
             }
         }
 

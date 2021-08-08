@@ -97,9 +97,9 @@
             </StackPanel>
 
             <StackPanel  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
-                <TextBlock Text="Skills" Style="{StaticResource TextStyle}"/>
+                <TextBlock Text="Available Skills" Style="{StaticResource TextStyle}"/>
                 <StackPanel Orientation="Horizontal">
-                    <ComboBox ItemsSource="{Binding SkillList}" Width="150" VerticalAlignment="Top" x:Name="Skill_ComboBox">
+                    <ComboBox ItemsSource="{Binding UnusedSkillList}" Width="150" VerticalAlignment="Top" x:Name="Skill_ComboBox">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="TabItem">
                                 <TextBlock Text="{Binding Name}"/>

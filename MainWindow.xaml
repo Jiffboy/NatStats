@@ -18,6 +18,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="TextAlignment" Value="Center"/>
             </Style>
+            <local:ModifierConverter x:Key="modifierConverter"></local:ModifierConverter>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -42,65 +43,18 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Saving Throws" Grid.ColumnSpan="2" TextAlignment="Center"/>
-                        <Button Style="{StaticResource RollButton}" Grid.Row="1">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Strength" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Strength}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource RollButton}" Grid.Column="1" Grid.Row="1">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Dexterity" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Dexterity}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource RollButton}" Grid.Row="2">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Constitution" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Constitution}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource RollButton}" Grid.Row="2" Grid.Column="1">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Intelligence" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Intelligence}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource RollButton}" Grid.Row="3">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Wisdom" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Wisdom}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Button Style="{StaticResource RollButton}" Grid.Row="3" Grid.Column="1">
-                            <Button.Content>
-                                <StackPanel>
-                                    <TextBlock Text="Charisma" Style="{StaticResource RollButtonText}"/>
-                                    <TextBlock Text="{Binding Charisma}" Style="{StaticResource RollButtonText}"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
+                        <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Skills}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource RollButton}" HorizontalAlignment="Center">
+                                        <MultiBinding Converter="{StaticResource modifierConverter}">
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.SelectedCharacter"/>
+                                            <Binding/>
+                                        </MultiBinding>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
