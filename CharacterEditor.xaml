@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="CharacterEditor" Height="339" Width="486">
+        Title="CharacterEditor" Height="339" Width="486"
+        Closing="Window_Closing">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -112,7 +113,7 @@
             <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,10,0,0" Text="Proficiencies" Style="{StaticResource TextStyle}"/>
 
             <StackPanel  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Style="{StaticResource StackPanelStyle}">
-                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Left" ItemsSource="{Binding ProficiencyList}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -121,10 +122,12 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="TextBlock">
-                                <Grid Width="140">
-                                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                    <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="ProficiencyRemove_Click" CommandParameter="{Binding}"/>
-                                </Grid>
+                                <ListViewItem>
+                                    <Grid Width="140">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                                        <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="ProficiencyRemove_Click" CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </ListViewItem>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

@@ -24,11 +24,16 @@ namespace NatStats
         private CharacterViewModel _charVM;
         private bool _newChar;
 
+        private List<Skill> _addedSkills;
+        private List<Skill> _removedSkills;
+
         public CharacterEditor(MainViewModel context, uint campaignId, uint characterId = 0)
         {
             _mvm = context;
             _newChar = false;
             this.DataContext = _mvm.Characters.Where(c => c.Id == characterId).FirstOrDefault();
+            _addedSkills = new List<Skill>();
+            _removedSkills = new List<Skill>();
             
             if(this.DataContext == null)
             {
@@ -72,19 +77,42 @@ namespace NatStats
             _charVM.Charisma = Convert.ToInt32(Charisma.Text);
 
             _charVM.SaveToDb();
+            _addedSkills.Clear();
+            _removedSkills.Clear();
 
             this.Close();
         }
 
         private void CharacterCancel_Click(object sender, RoutedEventArgs e)
         {
+            CancelChanges();
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CancelChanges();
+        }
+
+        private void CancelChanges()
+        {
+            // Undo changes made to the collections for viewing skills/proficiencies
+            foreach (var skill in _addedSkills)
+            {
+                _charVM.RemoveProficiency(skill);
+            }
+
+            foreach (var skill in _removedSkills)
+            {
+                _charVM.AddProficiency(skill);
+            }
         }
 
         private void ProficiencyAdd_Click(object sender, RoutedEventArgs e)
         {
             var skill = Skill_ComboBox.SelectedItem as Skill;
             _charVM.AddProficiency(skill);
+            _addedSkills.Add(skill);
         }
 
         private void ProficiencyRemove_Click(object sender, RoutedEventArgs e)
@@ -92,6 +120,7 @@ namespace NatStats
             var button = sender as Button;
             var skill = button.CommandParameter as Skill;
             _charVM.RemoveProficiency(skill);
+            _removedSkills.Add(skill);
         }
     }
 }
