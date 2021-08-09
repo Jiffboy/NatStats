@@ -44,13 +44,22 @@
                 <DataTemplate>
                     <Grid>
                         <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Skills}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button Style="{StaticResource RollButton}" HorizontalAlignment="Center">
-                                        <MultiBinding Converter="{StaticResource modifierConverter}">
-                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.SelectedCharacter"/>
-                                            <Binding/>
-                                        </MultiBinding>
+                                        <TextBlock TextAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource modifierConverter}">
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.SelectedCharacter"/>
+                                                    <Binding/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

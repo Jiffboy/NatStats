@@ -53,11 +53,8 @@ namespace NatStats
             }
             set
             {
-                if (SelectedCharacter != value)
-                {
-                    _selectedCharacter = value;
-                    OnPropertyChanged("SelectedCharacter");
-                }
+                _selectedCharacter = value;
+                OnPropertyChanged("SelectedCharacter");
             }
         }
 

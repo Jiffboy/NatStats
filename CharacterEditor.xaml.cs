@@ -79,6 +79,7 @@ namespace NatStats
             _charVM.SaveToDb();
             _addedSkills.Clear();
             _removedSkills.Clear();
+            _mvm.SelectedCharacter = _charVM;
 
             this.Close();
         }
