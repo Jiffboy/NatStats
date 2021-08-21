@@ -17,18 +17,12 @@ namespace NatStats
         private Character _character;
         private DataBaseContext _database;
 
-        public CharacterViewModel(uint characterId)
+        public CharacterViewModel(uint campaignId, uint characterId)
         {
             _database = new DataBaseContext();
             ClassList = new ObservableCollection<Class>();
             UnusedSkillList = new ObservableCollection<Skill>();
             ProficiencyList = new ObservableCollection<Skill>();
-
-            _character = _database.Character.Where(c => c.Id == characterId).FirstOrDefault();
-            if (_character == null)
-            {
-                _character = new Character();
-            }
 
             var classes = _database.Class.ToList();
             foreach (var clss in classes)
@@ -40,6 +34,12 @@ namespace NatStats
             foreach (var skill in skills)
             {
                 UnusedSkillList.Add(skill);
+            }
+
+            _character = _database.Character.Where(c => c.Id == characterId).FirstOrDefault();
+            if (_character == null)
+            {
+                _character = new Character { CampaignId = campaignId };
             }
 
             var proficiencies = _database.Proficiency.Where(p => p.CharacterId == characterId).ToList();
@@ -54,8 +54,18 @@ namespace NatStats
         {
             var proficiencies = _database.Proficiency.Where(p => p.CharacterId == _character.Id).ToList();
 
+            if (_database.Character.Where(c => c.Id == _character.Id).FirstOrDefault() == null)
+            {
+                var result = _database.Add(_character);
+                // Saving early to let the database handle the Character ID
+                _database.SaveChanges();
+
+                // The entity in the database will be a bit different, so copy it over
+                _character = result.Entity;
+            }
+
             // Clear out and reset proficiencies so we don't have to worry about duplicates
-            foreach(var proficiency in proficiencies)
+            foreach (var proficiency in proficiencies)
             {
                 _database.Remove(proficiency);
             }

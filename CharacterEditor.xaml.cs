@@ -19,7 +19,6 @@ namespace NatStats
     /// </summary>
     public partial class CharacterEditor : Window
     {
-        private uint _campaignId;
         private MainViewModel _mvm;
         private CharacterViewModel _charVM;
         private bool _newChar;
@@ -37,11 +36,10 @@ namespace NatStats
             
             if(this.DataContext == null)
             {
-                this.DataContext = new CharacterViewModel(characterId);
+                this.DataContext = new CharacterViewModel(campaignId, characterId);
                 _newChar = true;
             }
             _charVM = this.DataContext as CharacterViewModel;
-            _campaignId = campaignId;
             InitializeComponent();
 
             var db = new DataBaseContext();
@@ -67,7 +65,6 @@ namespace NatStats
             }
 
             _charVM.Name = CharName.Text;
-            //_charVM.CampaignId = _campaignId;
             _charVM.ClassId = (uint)Class.SelectedIndex + 1;
             _charVM.Strength = Convert.ToInt32(Strength.Text);
             _charVM.Dexterity = Convert.ToInt32(Dexterity.Text);

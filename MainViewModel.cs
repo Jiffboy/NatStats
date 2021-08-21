@@ -85,9 +85,13 @@ namespace NatStats
             var characters = _database.Character.Where(c => c.CampaignId == SelectedCampaign.Id).ToList();
             foreach(var character in characters)
             {
-                this.Characters.Add(new CharacterViewModel(character.Id));
+                this.Characters.Add(new CharacterViewModel(SelectedCampaign.Id, character.Id));
             }
-            SelectedCharacter = this.Characters[0];
+
+            if (this.Characters.Count > 0)
+            {
+                SelectedCharacter = this.Characters[0];
+            }
         }
     }
 }

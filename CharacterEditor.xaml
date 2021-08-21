@@ -97,7 +97,7 @@
             </StackPanel>
 
             <StackPanel  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
-                <TextBlock Text="Available Skills" Style="{StaticResource TextStyle}"/>
+                <TextBlock Text="Available Proficiencies" Width="150" Style="{StaticResource TextStyle}"/>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox ItemsSource="{Binding UnusedSkillList}" Width="150" VerticalAlignment="Top" x:Name="Skill_ComboBox">
                         <ComboBox.ItemTemplate>
