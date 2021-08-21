@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="NatStats" Height="450" Width="800">
+        Title="NatStats" Height="600" Width="800">
 
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="Button" x:Key="RollButton">
-                <Setter Property="Width" Value="80"/>
+                <Setter Property="Width" Value="100"/>
             </Style>
             <Style TargetType="TextBlock" x:Key="RollButtonText">
                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -42,8 +42,39 @@
 
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Skills}">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="240"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Saving Throws" TextAlignment="Center" Margin="0, 0, 0, 5" HorizontalAlignment="Center"/>
+                        <ItemsControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.SavingThrows}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource RollButton}" HorizontalAlignment="Center">
+                                        <TextBlock TextAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource modifierConverter}">
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Window}}" Path="DataContext.SelectedCharacter"/>
+                                                    <Binding/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Skills" TextAlignment="Center" Margin="0, 0, 0, 5" HorizontalAlignment="Center"/>
+                        <ItemsControl Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Skills}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel/>
@@ -68,5 +99,17 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
+        
+        <TextBlock HorizontalAlignment="Center" Text="{Binding SelectedCharacter.Name}" Margin="0, 5, 0, 0"/>
+        <TextBlock x:Name="RollName"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox x:Name="CurrRoll" Width="20"/>
+            <TextBlock Text="+"/>
+            <TextBlock x:Name="CurrModifier" Text="0"/>
+            <TextBlock Text="+"/>
+            <TextBox x:Name="CurrBonus" Width="20"/>
+            <TextBlock Text="="/>
+            <TextBox x:Name="CurrTotal" Width="20"/>
+        </StackPanel>
     </StackPanel>
 </Window>

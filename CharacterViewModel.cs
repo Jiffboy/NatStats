@@ -92,17 +92,17 @@ namespace NatStats
             abr = abr.ToLower();
             switch(abr)
             {
-                case "str":
+                case "strength":
                     return Strength;
-                case "dex":
+                case "dexterity":
                     return Dexterity;
-                case "con":
+                case "constitution":
                     return Constitution;
-                case "int":
+                case "intelligence":
                     return Intelligence;
-                case "wis":
+                case "wisdom":
                     return Wisdom;
-                case "cha":
+                case "charisma":
                     return Charisma;
                 default:
                     return 0;

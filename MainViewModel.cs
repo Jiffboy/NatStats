@@ -16,6 +16,8 @@ namespace NatStats
 
         public ObservableCollection<Skill> Skills { get; private set; }
 
+        public ObservableCollection<Skill> SavingThrows { get; private set; }
+
         public CampaignViewModel SelectedCampaign { get; private set; }
 
         private CharacterViewModel _selectedCharacter;
@@ -27,6 +29,7 @@ namespace NatStats
             _database = new DataBaseContext();
             Campaigns = new ObservableCollection<CampaignViewModel>();
             Skills = new ObservableCollection<Skill>();
+            SavingThrows = new ObservableCollection<Skill>();
             
 
             var campaigns = _database.Campaign.ToList();
@@ -39,7 +42,14 @@ namespace NatStats
             var skills = _database.Skill.ToList();
             foreach (var skill in skills)
             {
-                Skills.Add(skill);
+                if (skill.Name == skill.Base)
+                {
+                    SavingThrows.Add(skill);
+                }
+                else
+                {
+                    Skills.Add(skill);
+                }
             }
 
             UpdateCampaignCharacters();

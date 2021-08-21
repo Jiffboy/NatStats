@@ -21,17 +21,14 @@ namespace NatStats
             if(proficiency != null)
             {
                 val += 2; //TODO: Make proficiency weight modifiable
-                rtnStr += "(" + val + ")*";
-            }
-            else
-            {
-                rtnStr += "(" + val + ")";
             }
 
             if(val > 0)
             {
-                rtnStr = rtnStr.Replace("(", "(+");
+                rtnStr += "+";
             }
+
+            rtnStr += val;
 
             return rtnStr;
         }
