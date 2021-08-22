@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel>
+    <StackPanel KeyDown="Window_KeyDown">
         <DockPanel>
             <Menu DockPanel.Dock="Top" Background="White">
                 <MenuItem Header="_File"/>

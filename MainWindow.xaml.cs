@@ -110,6 +110,19 @@ namespace NatStats
 
         private void Roll_Click(object sender, RoutedEventArgs e)
         {
+            SaveRoll();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                SaveRoll();
+            }
+        }
+
+        private void SaveRoll()
+        {
             var db = new DataBaseContext();
             MainViewModel mvm = this.DataContext as MainViewModel;
             int roll = 0;
@@ -120,29 +133,29 @@ namespace NatStats
 
             string name = CurrRollName.Text;
 
-            if(CurrRollModifier.Text != "")
+            if (CurrRollModifier.Text != "")
             {
-                if(CurrRollModifierSign.Text == "+")
+                if (CurrRollModifierSign.Text == "+")
                 {
                     mod += Convert.ToInt32(CurrRollModifier.Text);
                 }
-                if(CurrRollModifierSign.Text == "-")
+                if (CurrRollModifierSign.Text == "-")
                 {
                     mod -= Convert.ToInt32(CurrRollModifier.Text);
                 }
             }
 
-            if(CurrRollBonus.Text != "")
+            if (CurrRollBonus.Text != "")
             {
                 bonusMod += Convert.ToInt32(CurrRollBonus.Text);
             }
 
-            if(CurrRollValue.Text != "")
+            if (CurrRollValue.Text != "")
             {
                 roll = Convert.ToInt32(CurrRollValue.Text);
                 total = roll + mod + bonusMod;
             }
-            else if(CurrRollTotal.Text != "")
+            else if (CurrRollTotal.Text != "")
             {
                 total = Convert.ToInt32(CurrRollTotal.Text);
                 roll = total - mod - bonusMod;
