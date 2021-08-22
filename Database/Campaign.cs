@@ -8,5 +8,6 @@ namespace NatStats.Database
     {
         public uint Id { get; set; }
         public string Name { get; set; }
+        public bool InCombat { get; set; }
     }
 }

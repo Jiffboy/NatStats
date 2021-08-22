@@ -115,5 +115,6 @@
             <TextBlock Text="="/>
             <TextBox x:Name="CurrRollTotal" Width="20"/>
         </StackPanel>
+        <Button Content="Roll" MaxWidth="40" Margin="0,10,0,0" Click="Roll_Click"/>
     </StackPanel>
 </Window>

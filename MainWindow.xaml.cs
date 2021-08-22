@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NatStats.Database;
 
 namespace NatStats
 {
@@ -105,6 +106,59 @@ namespace NatStats
         {
             MainViewModel mvm = this.DataContext as MainViewModel;
             mvm.RollEntryTotal = false;
+        }
+
+        private void Roll_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DataBaseContext();
+            MainViewModel mvm = this.DataContext as MainViewModel;
+            int roll = 0;
+            int mod = 0;
+            int bonusMod = 0;
+            int total = 0;
+            int sides = 20; // Temporary
+
+            string name = CurrRollName.Text;
+
+            if(CurrRollModifier.Text != "")
+            {
+                if(CurrRollModifierSign.Text == "+")
+                {
+                    mod += Convert.ToInt32(CurrRollModifier.Text);
+                }
+                if(CurrRollModifierSign.Text == "-")
+                {
+                    mod -= Convert.ToInt32(CurrRollModifier.Text);
+                }
+            }
+
+            if(CurrRollBonus.Text != "")
+            {
+                bonusMod += Convert.ToInt32(CurrRollBonus.Text);
+            }
+
+            if(CurrRollValue.Text != "")
+            {
+                roll = Convert.ToInt32(CurrRollValue.Text);
+                total = roll + mod + bonusMod;
+            }
+            else if(CurrRollTotal.Text != "")
+            {
+                total = Convert.ToInt32(CurrRollTotal.Text);
+                roll = total - mod - bonusMod;
+            }
+
+            var result = db.Add(new RollHeader { CharacterId = mvm.CurrRollCharacter.Id, Name = name, FinalValue = total, RollType = "Check" });
+            // Save to assign an ID
+            db.SaveChanges();
+            RollHeader header = result.Entity;
+
+            db.Add(new Roll { HeaderId = header.Id, DiceRoll = roll, Modifier = mod, BonusModifier = bonusMod, DiceSides = sides, Total = total, IsFinal = true });
+            db.SaveChanges();
+
+            CurrRollValue.Text = "";
+            CurrRollTotal.Text = "";
+            CurrRollBonus.Text = "";
         }
     }
 }

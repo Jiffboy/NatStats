@@ -13,6 +13,11 @@ namespace NatStats.Database
         public virtual DbSet<Class> Class { get; set; }
         public virtual DbSet<Proficiency> Proficiency { get; set; }
         public virtual DbSet<Skill> Skill { get; set; }
+        public virtual DbSet<Combat> Combat { get; set; }
+        public virtual DbSet<Session> Session { get; set; }
+        public virtual DbSet<RollHeader> RollHeader { get; set; }
+        public virtual DbSet<Roll> Roll { get; set; }
+        public virtual DbSet<RollRecipient> RollRecipient { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,6 +57,8 @@ namespace NatStats.Database
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Name).IsRequired();
+
+                entity.Property(e => e.InCombat);
             });
 
             modelBuilder.Entity<Class>(entity =>
@@ -75,6 +82,72 @@ namespace NatStats.Database
                 entity.Property(entity => entity.Name).IsRequired();
 
                 entity.Property(entity => entity.Base).IsRequired();
+            });
+
+            modelBuilder.Entity<Combat>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.CampaignId).IsRequired();
+
+                entity.Property(entity => entity.Number);
+
+                entity.Property(entity => entity.Description);
+            });
+
+            modelBuilder.Entity<Session>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.CampaignId).IsRequired();
+
+                entity.Property(entity => entity.Number);
+
+                entity.Property(entity => entity.Description);
+            });
+
+            modelBuilder.Entity<RollHeader>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.CharacterId);
+
+                entity.Property(entity => entity.CombatId);
+
+                entity.Property(entity => entity.SessionId);
+
+                entity.Property(entity => entity.Name);
+
+                entity.Property(entity => entity.RollType);
+
+                entity.Property(entity => entity.FinalValue).IsRequired();
+            });
+
+            modelBuilder.Entity<Roll>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.HeaderId).IsRequired();
+
+                entity.Property(entity => entity.Description);
+
+                entity.Property(entity => entity.Modifier).IsRequired();
+
+                entity.Property(entity => entity.BonusModifier).IsRequired();
+
+                entity.Property(entity => entity.DiceSides).IsRequired();
+
+                entity.Property(entity => entity.DiceRoll).IsRequired();
+
+                entity.Property(entity => entity.Total);
+
+                entity.Property(entity => entity.IsFinal).IsRequired();
+            });
+
+            modelBuilder.Entity<RollRecipient>(entity =>
+            {
+                entity.HasKey(entity => entity.CharacterId);
+                entity.HasKey(entity => entity.HeaderId);
             });
 
             OnModelCreatingPartial(modelBuilder);
