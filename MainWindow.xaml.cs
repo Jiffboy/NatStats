@@ -50,5 +50,61 @@ namespace NatStats
                 window.Show();
             }
         }
+
+        private void SkillButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel mvm = DataContext as MainViewModel;
+            Button button = sender as Button;
+            string btnText = (button.Content as TextBlock).Text;
+
+            string roll = btnText.Split("\n")[0];
+            string mod = btnText.Split("\n")[1];
+
+            CurrRollName.Text = roll;
+            mvm.CurrRollCharacter = mvm.SelectedCharacter;
+
+            if (mod.Contains("+"))
+            {
+                CurrRollModifierSign.Text = "+";
+                CurrRollModifier.Text = mod.Replace("+", "");
+            }
+            else if(mod.Contains("-"))
+            {
+                CurrRollModifierSign.Text = "-";
+                CurrRollModifier.Text = mod.Replace("-", "");
+            }
+            else
+            {
+                CurrRollModifierSign.Text = "";
+                CurrRollModifier.Text = "";
+            }
+
+            FocusRollbox();
+        }
+
+        private void FocusRollbox()
+        {
+            MainViewModel mvm = DataContext as MainViewModel;
+            if(mvm.RollEntryDice)
+            {
+                CurrRollValue.Focus();
+            }
+            else if(mvm.RollEntryTotal)
+            {
+                CurrRollTotal.Focus();
+            }
+        }
+
+        private void RollEntryDice_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel mvm = this.DataContext as MainViewModel;
+            mvm.RollEntryDice = true;
+        }
+
+        private void RollEntryTotal_Click(object sender, RoutedEventArgs e)
+        {
+            MainViewModel mvm = this.DataContext as MainViewModel;
+            mvm.RollEntryTotal = false;
+        }
     }
 }

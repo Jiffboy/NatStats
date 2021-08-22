@@ -6,10 +6,17 @@ using System.ComponentModel;
 using NatStats.Database;
 using System.Linq;
 
+enum RollEntryMode
+{ 
+    Dice,
+    Total
+}
+
 namespace NatStats
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<CharacterViewModel> Characters { get; private set; }
 
         public ObservableCollection<CampaignViewModel> Campaigns { get; private set; }
@@ -20,9 +27,68 @@ namespace NatStats
 
         public CampaignViewModel SelectedCampaign { get; private set; }
 
+        private RollEntryMode _rollEntryMode;
+
         private CharacterViewModel _selectedCharacter;
 
+        private CharacterViewModel _currRollCharacter;
+
         private DataBaseContext _database;
+
+        public CharacterViewModel SelectedCharacter
+        {
+            get
+            {
+                return _selectedCharacter;
+            }
+            set
+            {
+                _selectedCharacter = value;
+                OnPropertyChanged("SelectedCharacter");
+            }
+        }
+
+        public CharacterViewModel CurrRollCharacter
+        {
+            get
+            {
+                return _currRollCharacter;
+            }
+            set
+            {
+                _currRollCharacter = value;
+                OnPropertyChanged("CurrRollCharacter");
+            }
+        }
+
+        public bool RollEntryDice
+        {
+            get
+            {
+                return _rollEntryMode == RollEntryMode.Dice;
+            }
+            set
+            {
+                _rollEntryMode = RollEntryMode.Dice;
+                OnPropertyChanged("RollEntryDice");
+                OnPropertyChanged("RollEntryTotal");
+            }
+        }
+
+        public bool RollEntryTotal
+        {
+            get
+            {
+                return _rollEntryMode == RollEntryMode.Total;
+            }
+            set
+            {
+                _rollEntryMode = RollEntryMode.Total;
+                OnPropertyChanged("RollEntryTotal");
+                OnPropertyChanged("RollEntryDice");
+            }
+        }
+
 
         public MainViewModel()
         {
@@ -30,7 +96,8 @@ namespace NatStats
             Campaigns = new ObservableCollection<CampaignViewModel>();
             Skills = new ObservableCollection<Skill>();
             SavingThrows = new ObservableCollection<Skill>();
-            
+
+            _rollEntryMode = RollEntryMode.Dice;
 
             var campaigns = _database.Campaign.ToList();
             foreach (var campaign in campaigns)
@@ -54,21 +121,6 @@ namespace NatStats
 
             UpdateCampaignCharacters();
         }
-
-        public CharacterViewModel SelectedCharacter
-        {
-            get
-            {
-                return _selectedCharacter;
-            }
-            set
-            {
-                _selectedCharacter = value;
-                OnPropertyChanged("SelectedCharacter");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(String info)
         {
