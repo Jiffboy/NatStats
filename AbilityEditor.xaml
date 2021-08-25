@@ -28,41 +28,41 @@
 
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4">
             <TextBlock Text="Name"/>
-            <TextBox/>
+            <TextBox x:Name="Name"/>
         </StackPanel>
 
         <TextBlock Text="Hit Check"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"/>
         <CheckBox Content="Cannot Miss" Grid.Column="0" Grid.Row="2"/>
-        <ComboBox Grid.Column="1" Grid.Row="2"/>
+        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding BaseList}" x:Name="HitCheckBase" SelectedIndex="0"/>
         <TextBlock Text="+" Grid.Column="2" Grid.Row="2"/>
-        <TextBox Grid.Column="3" Grid.Row="2"/>
+        <TextBox Grid.Column="3" Grid.Row="2" x:Name="HitCheckBonus" Text="0"/>
 
         <TextBlock Text="Effect" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"/>
         <CheckBox Content="Damage" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
         <CheckBox Content="Healing" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4">
-            <TextBox/>
+            <TextBox x:Name="Effect1Sides" Text="1"/>
             <TextBlock Text="d"/>
-            <TextBox/>
+            <TextBox x:Name="Effect1Count" Text="8"/>
             <TextBlock Text="+"/>
-            <TextBox/>
-            <ComboBox/>
-            <ComboBox/>
+            <TextBox x:Name="Effect1Bonus" Text="0"/>
+            <ComboBox ItemsSource="{Binding BaseList}" x:Name="Effect1Base" SelectedIndex="0"/>
+            <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="Effect1DamageType" SelectedIndex="11"/>
         </StackPanel>
 
         <CheckBox Content="Secondary Effect" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4"/>
         <CheckBox Content="Damage" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
         <CheckBox Content="Healing" Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="2"/>
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4">
-            <TextBox/>
+            <TextBox x:Name="Effect2Sides" Text="1"/>
             <TextBlock Text="d"/>
-            <TextBox/>
+            <TextBox x:Name="Effect2Count" Text="8"/>
             <TextBlock Text="+"/>
-            <TextBox/>
-            <ComboBox/>
-            <ComboBox/>
+            <TextBox x:Name="Effect2Bonus" Text="0"/>
+            <ComboBox ItemsSource="{Binding BaseList}" x:Name="Effect2Base" SelectedIndex="0"/>
+            <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="Effect2DamageType" SelectedIndex="11"/>
         </StackPanel>
 
-        <Button Content="Save" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4" Click="Save_Click"/>
+        <Button Content="OK" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4" Click="OK_Click"/>
     </Grid>
 </Window>

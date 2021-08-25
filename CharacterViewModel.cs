@@ -50,6 +50,12 @@ namespace NatStats
                 var skill = _database.Skill.Where(s => s.Id == proficiency.SkillId).FirstOrDefault();
                 AddProficiency(skill);
             }
+
+            var abilites = _database.Ability.Where(c => c.CharacterId == characterId).ToList();
+            foreach(var ability in abilites)
+            {
+                Abilities.Add(new AbilityViewModel(characterId, ability.Id));
+            }    
         }
 
         public void SaveToDb()
@@ -75,6 +81,13 @@ namespace NatStats
             foreach(var skill in ProficiencyList)
             {
                 _database.Add(new Proficiency { CharacterId = _character.Id, SkillId = skill.Id });
+            }
+
+            foreach(var ability in Abilities)
+            {
+                // Just in case we made this ability before the Character Id was assigned
+                ability.CharacterId = _character.Id;
+                ability.SaveToDb();
             }
 
             _database.SaveChanges();

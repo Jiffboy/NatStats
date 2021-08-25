@@ -130,5 +130,21 @@ namespace NatStats
             Window window = new AbilityEditor(_charVM);
             window.Show();
         }
+
+        private void Ability_Click(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ChangedButton == MouseButton.Left)
+            {
+                var item = sender as ListViewItem;
+                var ability = item.DataContext as AbilityViewModel;
+                Window window = new AbilityEditor(_charVM, ability);
+                window.Show();
+            }
+        }
+
+        private void AbilityRemove_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

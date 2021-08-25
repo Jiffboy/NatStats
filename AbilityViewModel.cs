@@ -11,17 +11,32 @@ namespace NatStats
 {
     public class AbilityViewModel : INotifyPropertyChanged
     {
+        public ObservableCollection<String> BaseList { get; private set; }
+        public ObservableCollection<String> DamageTypeList { get; private set; }
+
         private Ability _ability;
         private DataBaseContext _database;
 
         public AbilityViewModel(uint characterId, uint abilityId)
         {
             _database = new DataBaseContext();
+            BaseList = new ObservableCollection<string>();
+            DamageTypeList = new ObservableCollection<string>();
 
-            _ability = _database.Ability.Where(c => c.Id == characterId).FirstOrDefault();
+            _ability = _database.Ability.Where(c => c.Id == abilityId).FirstOrDefault();
             if (_ability == null)
             {
-                _ability = new Ability { CharacterId = characterId };
+                _ability = new Ability {};
+            }
+
+            foreach( var skill in _database.Skill.Where(s => s.Name == s.Base).ToList())
+            {
+                BaseList.Add(skill.Name);
+            }
+
+            foreach( var damage in _database.DamageType.ToList())
+            {
+                DamageTypeList.Add(damage.Name);
             }
         }
 
@@ -30,7 +45,6 @@ namespace NatStats
             if (_database.Ability.Where(c => c.Id == _ability.Id).FirstOrDefault() == null)
             {
                 var result = _database.Add(_ability);
-                _ability.Name = "test";
                 // Saving early to let the database handle the Ability ID
                 _database.SaveChanges();
 
@@ -69,6 +83,22 @@ namespace NatStats
                 {
                     _ability.Id = value;
                     OnPropertyChanged("Id");
+                }
+            }
+        }
+
+        public uint CharacterId
+        {
+            get
+            {
+                return _ability.CharacterId;
+            }
+            set
+            {
+                if (CharacterId != value)
+                {
+                    _ability.CharacterId = value;
+                    OnPropertyChanged("CharacterId");
                 }
             }
         }

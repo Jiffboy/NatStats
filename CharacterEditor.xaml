@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="CharacterEditor" Height="339" Width="486"
+        Title="CharacterEditor" Height="500" Width="486"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -33,6 +33,7 @@
     <Viewbox>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -144,9 +145,31 @@
                 </ListView>
             </StackPanel>
 
-            <Button Content="Cancel" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterCancel_Click"/>
-            <Button Content="Save" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterSave_Click"/>
-            <Button Content="Ability" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterAttack_Click"/>
+            <StackPanel  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource StackPanelStyle}">
+                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Left" ItemsSource="{Binding Abilities}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="TextBlock">
+                                <ListViewItem PreviewMouseDown="Ability_Click">
+                                    <Grid Width="140" >
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                                        <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="AbilityRemove_Click" CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </ListViewItem>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ListView>
+            </StackPanel>
+
+            <Button Content="Cancel" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterCancel_Click"/>
+            <Button Content="Save" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterSave_Click"/>
+            <Button Content="Ability" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterAttack_Click"/>
         </Grid>
     </Viewbox>
 </Window>
