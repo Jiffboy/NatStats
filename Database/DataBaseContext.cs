@@ -19,6 +19,7 @@ namespace NatStats.Database
         public virtual DbSet<Roll> Roll { get; set; }
         public virtual DbSet<RollRecipient> RollRecipient { get; set; }
         public virtual DbSet<DamageType> DamageType { get; set; }
+        public virtual DbSet<Ability> Ability { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -161,6 +162,47 @@ namespace NatStats.Database
                 entity.HasKey(entity => entity.Id);
 
                 entity.Property(entity => entity.Name);
+            });
+
+            modelBuilder.Entity<Ability>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.CharacterId).IsRequired();
+
+                entity.Property(entity => entity.Name).IsRequired();
+
+                entity.Property(entity => entity.HitCheckBase);
+
+                entity.Property(entity => entity.HitCheckBonus);
+
+                entity.Property(entity => entity.Effect1EffectType);
+
+                entity.Property(entity => entity.Effect1DiceCount);
+
+                entity.Property(entity => entity.Effect1DiceSides);
+
+                entity.Property(entity => entity.Effect1Base);
+
+                entity.Property(entity => entity.Effect1Bonus);
+
+                entity.Property(entity => entity.Effect1DamageTypeId);
+
+                entity.Property(entity => entity.HasSecondaryEffect);
+
+                entity.Property(entity => entity.Effect2Base);
+
+                entity.Property(entity => entity.Effect2Bonus);
+
+                entity.Property(entity => entity.Effect2DiceCount);
+
+                entity.Property(entity => entity.Effect2DiceSides);
+
+                entity.Property(entity => entity.Effect2Base);
+
+                entity.Property(entity => entity.Effect2Bonus);
+
+                entity.Property(entity => entity.Effect2DamageTypeId);
             });
 
             OnModelCreatingPartial(modelBuilder);

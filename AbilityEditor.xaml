@@ -1,0 +1,68 @@
+﻿<Window x:Class="NatStats.AbilityEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NatStats"
+        mc:Ignorable="d"
+        Title="AbilityEditor" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4">
+            <TextBlock Text="Name"/>
+            <TextBox/>
+        </StackPanel>
+
+        <TextBlock Text="Hit Check"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"/>
+        <CheckBox Content="Cannot Miss" Grid.Column="0" Grid.Row="2"/>
+        <ComboBox Grid.Column="1" Grid.Row="2"/>
+        <TextBlock Text="+" Grid.Column="2" Grid.Row="2"/>
+        <TextBox Grid.Column="3" Grid.Row="2"/>
+
+        <TextBlock Text="Effect" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"/>
+        <CheckBox Content="Damage" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <CheckBox Content="Healing" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4">
+            <TextBox/>
+            <TextBlock Text="d"/>
+            <TextBox/>
+            <TextBlock Text="+"/>
+            <TextBox/>
+            <ComboBox/>
+            <ComboBox/>
+        </StackPanel>
+
+        <CheckBox Content="Secondary Effect" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4"/>
+        <CheckBox Content="Damage" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <CheckBox Content="Healing" Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4">
+            <TextBox/>
+            <TextBlock Text="d"/>
+            <TextBox/>
+            <TextBlock Text="+"/>
+            <TextBox/>
+            <ComboBox/>
+            <ComboBox/>
+        </StackPanel>
+
+        <Button Content="Save" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4" Click="Save_Click"/>
+    </Grid>
+</Window>

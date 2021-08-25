@@ -13,6 +13,7 @@ namespace NatStats
         public ObservableCollection<Class> ClassList { get; private set; }
         public ObservableCollection<Skill> UnusedSkillList { get; private set; }
         public ObservableCollection<Skill> ProficiencyList { get; private set; }
+        public ObservableCollection<AbilityViewModel> Abilities { get; private set; }
 
         private Character _character;
         private DataBaseContext _database;
@@ -23,6 +24,7 @@ namespace NatStats
             ClassList = new ObservableCollection<Class>();
             UnusedSkillList = new ObservableCollection<Skill>();
             ProficiencyList = new ObservableCollection<Skill>();
+            Abilities = new ObservableCollection<AbilityViewModel>();
 
             var classes = _database.Class.ToList();
             foreach (var clss in classes)

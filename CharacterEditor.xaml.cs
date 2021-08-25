@@ -124,5 +124,11 @@ namespace NatStats
             _charVM.RemoveProficiency(skill);
             _removedSkills.Add(skill);
         }
+
+        private void CharacterAttack_Click(object sender, RoutedEventArgs e)
+        {
+            Window window = new AbilityEditor(_charVM);
+            window.Show();
+        }
     }
 }
