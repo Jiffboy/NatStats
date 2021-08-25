@@ -17,5 +17,7 @@ namespace NatStats.Database
         public int Intelligence { get; set; }
         public int Wisdom { get; set; }
         public int Charisma { get; set; }
+        public int ProficiencyBonus { get; set; }
+        public int Level { get; set; }
     }
 }

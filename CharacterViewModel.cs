@@ -262,6 +262,38 @@ namespace NatStats
             }
         }
 
+        public int ProficiencyBonus
+        {
+            get
+            {
+                return _character.ProficiencyBonus;
+            }
+            set
+            {
+                if (ProficiencyBonus != value)
+                {
+                    _character.ProficiencyBonus = value;
+                    OnPropertyChanged("ProficiencyBonus");
+                }
+            }
+        }
+
+        public int Level
+        {
+            get
+            {
+                return _character.Level;
+            }
+            set
+            {
+                if (Level != value)
+                {
+                    _character.Level = value;
+                    OnPropertyChanged("Level");
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(String info)

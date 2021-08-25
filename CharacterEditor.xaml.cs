@@ -54,6 +54,8 @@ namespace NatStats
                 Intelligence.Text = character.Intelligence.ToString();
                 Wisdom.Text = character.Wisdom.ToString();
                 Charisma.Text = character.Charisma.ToString();
+                Level.Text = character.Level.ToString();
+                ProfBonus.Text = character.ProficiencyBonus.ToString();
             }
         }
 
@@ -72,6 +74,8 @@ namespace NatStats
             _charVM.Intelligence = Convert.ToInt32(Intelligence.Text);
             _charVM.Wisdom = Convert.ToInt32(Wisdom.Text);
             _charVM.Charisma = Convert.ToInt32(Charisma.Text);
+            _charVM.Level = Convert.ToInt32(Level.Text);
+            _charVM.ProficiencyBonus = Convert.ToInt32(ProfBonus.Text);
 
             _charVM.SaveToDb();
             _addedSkills.Clear();

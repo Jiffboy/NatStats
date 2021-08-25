@@ -42,15 +42,25 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Level" Style="{StaticResource TextStyle}"/>
+                <TextBox x:Name="Level" Style="{StaticResource TextBoxStyle}" Text="1"/>
+            </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource StackPanelStyle}">
                 <TextBlock Text="Name" Style="{StaticResource TextStyle}"/>
                 <TextBox x:Name="CharName" Style="{StaticResource TextBoxStyle}" Width="150"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="3" Style="{StaticResource StackPanelStyle}">
+                <TextBlock Text="Proficiency Bonus" Style="{StaticResource TextStyle}"/>
+                <TextBox x:Name="ProfBonus" Style="{StaticResource TextBoxStyle}" Text="2"/>
             </StackPanel>
 
             <StackPanel  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
@@ -96,7 +106,7 @@
                 <TextBox Text="0" x:Name="Charisma" Style="{StaticResource TextBoxStyle}"/>
             </StackPanel>
 
-            <StackPanel  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}">
+            <StackPanel  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource StackPanelStyle}" HorizontalAlignment="Center">
                 <TextBlock Text="Available Proficiencies" Width="150" Style="{StaticResource TextStyle}"/>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox ItemsSource="{Binding UnusedSkillList}" Width="150" VerticalAlignment="Top" x:Name="Skill_ComboBox">
@@ -113,7 +123,7 @@
             <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,10,0,0" Text="Proficiencies" Style="{StaticResource TextStyle}"/>
 
             <StackPanel  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Style="{StaticResource StackPanelStyle}">
-                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="165">
                     <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Left" ItemsSource="{Binding ProficiencyList}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

@@ -18,6 +18,7 @@ namespace NatStats.Database
         public virtual DbSet<RollHeader> RollHeader { get; set; }
         public virtual DbSet<Roll> Roll { get; set; }
         public virtual DbSet<RollRecipient> RollRecipient { get; set; }
+        public virtual DbSet<DamageType> DamageType { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,6 +51,10 @@ namespace NatStats.Database
                 entity.Property(e => e.Wisdom).IsRequired();
 
                 entity.Property(e => e.Charisma).IsRequired();
+
+                entity.Property(e => e.ProficiencyBonus).IsRequired();
+
+                entity.Property(e => e.Level);
             });
 
             modelBuilder.Entity<Campaign>(entity =>
@@ -147,7 +152,15 @@ namespace NatStats.Database
             modelBuilder.Entity<RollRecipient>(entity =>
             {
                 entity.HasKey(entity => entity.CharacterId);
+
                 entity.HasKey(entity => entity.HeaderId);
+            });
+
+            modelBuilder.Entity<DamageType>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.Name);
             });
 
             OnModelCreatingPartial(modelBuilder);

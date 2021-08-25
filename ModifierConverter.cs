@@ -20,7 +20,7 @@ namespace NatStats
 
             if(proficiency != null)
             {
-                val += 2; //TODO: Make proficiency weight modifiable
+                val += character.ProficiencyBonus;
             }
 
             if(val > 0)
