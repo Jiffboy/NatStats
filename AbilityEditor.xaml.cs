@@ -56,6 +56,7 @@ namespace NatStats
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
+            _abilityVM.CharacterId = _charVM.Id;
             _abilityVM.Name = Name.Text;
             _abilityVM.HitCheckBase = HitCheckBase.Text;
             _abilityVM.HitCheckBonus = Convert.ToInt32(HitCheckBonus.Text);

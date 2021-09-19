@@ -135,7 +135,7 @@ namespace NatStats
         {
             if(e.ChangedButton == MouseButton.Left)
             {
-                var item = sender as ListViewItem;
+                var item = sender as Grid;
                 var ability = item.DataContext as AbilityViewModel;
                 Window window = new AbilityEditor(_charVM, ability);
                 window.Show();

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="CharacterEditor" Height="500" Width="486"
+        Title="CharacterEditor" Height="520" Width="486"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -27,12 +27,15 @@
             <Style TargetType="StackPanel" x:Key="StackPanelStyle">
                 <Setter Property="Margin" Value="10"/>
             </Style>
+            <local:AbilityModConverter x:Key="abilityModConverter"></local:AbilityModConverter>
+            <local:AbilityRollConverter x:Key="abilityRollConverter"></local:AbilityRollConverter>
         </ResourceDictionary>
     </Window.Resources>
 
     <Viewbox>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -124,52 +127,55 @@
             <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,10,0,0" Text="Proficiencies" Style="{StaticResource TextStyle}"/>
 
             <StackPanel  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Style="{StaticResource StackPanelStyle}">
-                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="165">
-                    <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Left" ItemsSource="{Binding ProficiencyList}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="TextBlock">
-                                <ListViewItem>
-                                    <Grid Width="140">
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                        <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="ProficiencyRemove_Click" CommandParameter="{Binding}"/>
-                                    </Grid>
-                                </ListViewItem>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="170" VerticalAlignment="Top" HorizontalAlignment="Center" ItemsSource="{Binding ProficiencyList}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="TextBlock">
+                            <Grid Width="140">
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                                <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="ProficiencyRemove_Click" CommandParameter="{Binding}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
 
-            <StackPanel  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource StackPanelStyle}">
-                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Left" ItemsSource="{Binding Abilities}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
+            <TextBlock Text="Abilities" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+            <StackPanel  Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="4" Style="{StaticResource StackPanelStyle}">
+                <ListView Height="140" BorderBrush="Black" BorderThickness="1" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Center" ItemsSource="{Binding Abilities}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
                                 <StackPanel Orientation="Vertical"/>
                             </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="TextBlock">
-                                <ListViewItem PreviewMouseDown="Ability_Click">
-                                    <Grid Width="140" >
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                        <Button Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="AbilityRemove_Click" CommandParameter="{Binding}"/>
-                                    </Grid>
-                                </ListViewItem>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="TextBlock">
+                            <Grid Width="380" HorizontalAlignment="Stretch" MouseDown="Ability_Click">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Converter={StaticResource abilityModConverter}}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Converter={StaticResource abilityRollConverter}}"/>
+                                <Button Grid.Column="3" Content="x" HorizontalAlignment="Right" Background="White" BorderBrush="white" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Click="AbilityRemove_Click" CommandParameter="{Binding}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
 
-            <Button Content="Cancel" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterCancel_Click"/>
-            <Button Content="Save" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterSave_Click"/>
-            <Button Content="Ability" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterAttack_Click"/>
+            <Button Content="Cancel" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterCancel_Click"/>
+            <Button Content="Save" Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterSave_Click"/>
+            <Button Content="Ability" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Width="75" Height="25" Margin="10" Click="CharacterAttack_Click"/>
         </Grid>
     </Viewbox>
 </Window>
