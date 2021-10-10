@@ -11,50 +11,37 @@ namespace NatStats
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return "";
             var ability = value as AbilityViewModel;
             var database = new DataBaseContext();
-            var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
             var character = database.Character.Where(c => c.Id == ability.CharacterId).FirstOrDefault();
-            var proficiency = database.Proficiency.Where(p => p.CharacterId == ability.CharacterId && p.SkillId == skill.Id).FirstOrDefault();
-            int val = 0;
             string rtnStr = "";
 
-            switch (skill.Name.ToLower())
+            if (ability.HasHitCheck)
             {
-                case "strength":
-                    val = character.Strength;
-                    break;
-                case "dexterity":
-                    val = character.Dexterity;
-                    break;
-                case "constitution":
-                    val = character.Constitution;
-                    break;
-                case "intelligence":
-                    val = character.Intelligence;
-                    break;
-                case "wisdom":
-                    val = character.Wisdom;
-                    break;
-                case "charisma":
-                    val = character.Charisma;
-                    break;
-            }
+                var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
+                var proficiency = database.Proficiency.Where(p => p.CharacterId == ability.CharacterId && p.SkillId == skill.Id).FirstOrDefault();
+                int val = 0;
 
-            if (proficiency != null)
+                val = CommonFuncs.GetBaseStat(character, skill.Name);
+
+                if (proficiency != null)
+                {
+                    val += character.ProficiencyBonus;
+                }
+
+                val += ability.HitCheckBonus;
+
+                if (val > 0)
+                {
+                    rtnStr += "+";
+                }
+
+                rtnStr += val;
+            }
+            else if(ability.HasSavingThrow)
             {
-                val += character.ProficiencyBonus;
+                // TODO
             }
-
-            val += ability.HitCheckBonus;
-
-            if (val > 0)
-            {
-                rtnStr += "+";
-            }
-
-            rtnStr += val;
 
             return rtnStr;
         }
@@ -69,43 +56,32 @@ namespace NatStats
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return "";
             var ability = value as AbilityViewModel;
             var database = new DataBaseContext();
-            var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
             var character = database.Character.Where(c => c.Id == ability.CharacterId).FirstOrDefault();
-            var damage = database.DamageType.Where(d => d.Id == ability.EffectDamageTypeId).FirstOrDefault();
-            int bonus = 0;
-            string rtnStr = ability.EffectDiceCount + "d" + ability.EffectDiceSides;
+            string rtnStr = "";
 
-            switch (skill.Name.ToLower())
+            if (ability.HasHitCheck)
             {
-                case "strength":
-                    bonus = character.Strength;
-                    break;
-                case "dexterity":
-                    bonus = character.Dexterity;
-                    break;
-                case "constitution":
-                    bonus = character.Constitution;
-                    break;
-                case "intelligence":
-                    bonus = character.Intelligence;
-                    break;
-                case "wisdom":
-                    bonus = character.Wisdom;
-                    break;
-                case "charisma":
-                    bonus = character.Charisma;
-                    break;
-            }
+                var skill = database.Skill.Where(s => s.Name == ability.EffectBase).FirstOrDefault();
+                var damage = database.DamageType.Where(d => d.Id == ability.EffectDamageTypeId).FirstOrDefault();
+                int bonus = 0;
+                rtnStr = ability.EffectDiceCount + "d" + ability.EffectDiceSides;
 
-            if (bonus > 0)
-            {
-                rtnStr += "+";
-            }
+                bonus = CommonFuncs.GetBaseStat(character, skill.Name);
 
-            rtnStr += bonus + " " + damage.Name;
+                if (bonus > 0)
+                {
+                    rtnStr += "+";
+                }
+
+                if (bonus != 0)
+                {
+                    rtnStr += bonus;
+                }
+
+                rtnStr += " " + damage.Name;
+            }
 
             return rtnStr;
         }
