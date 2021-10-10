@@ -11,6 +11,7 @@ namespace NatStats
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            return "";
             var ability = value as AbilityViewModel;
             var database = new DataBaseContext();
             var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
@@ -68,13 +69,14 @@ namespace NatStats
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            return "";
             var ability = value as AbilityViewModel;
             var database = new DataBaseContext();
             var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
             var character = database.Character.Where(c => c.Id == ability.CharacterId).FirstOrDefault();
-            var damage = database.DamageType.Where(d => d.Id == ability.Effect1DamageTypeId).FirstOrDefault();
+            var damage = database.DamageType.Where(d => d.Id == ability.EffectDamageTypeId).FirstOrDefault();
             int bonus = 0;
-            string rtnStr = ability.Effect1DiceCount + "d" + ability.Effect1DiceSides;
+            string rtnStr = ability.EffectDiceCount + "d" + ability.EffectDiceSides;
 
             switch (skill.Name.ToLower())
             {

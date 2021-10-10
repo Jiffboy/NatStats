@@ -13,6 +13,7 @@ namespace NatStats
     {
         public ObservableCollection<String> BaseList { get; private set; }
         public ObservableCollection<String> DamageTypeList { get; private set; }
+        public ObservableCollection<String> ConditionList { get; private set; }
 
         private Ability _ability;
         private DataBaseContext _database;
@@ -22,21 +23,27 @@ namespace NatStats
             _database = new DataBaseContext();
             BaseList = new ObservableCollection<string>();
             DamageTypeList = new ObservableCollection<string>();
+            ConditionList = new ObservableCollection<string>();
 
             _ability = _database.Ability.Where(c => c.Id == abilityId).FirstOrDefault();
             if (_ability == null)
             {
-                _ability = new Ability {};
+                _ability = new Ability { };
             }
 
-            foreach( var skill in _database.Skill.Where(s => s.Name == s.Base).ToList())
+            foreach (var skill in _database.Skill.Where(s => s.Name == s.Base).ToList())
             {
                 BaseList.Add(skill.Name);
             }
 
-            foreach( var damage in _database.DamageType.ToList())
+            foreach (var damage in _database.DamageType.ToList())
             {
                 DamageTypeList.Add(damage.Name);
+            }
+
+            foreach (var condition in _database.Condition.ToList())
+            {
+                ConditionList.Add(condition.Name);
             }
         }
 
@@ -53,22 +60,6 @@ namespace NatStats
             }
 
             _database.SaveChanges();
-        }
-
-        public String Name
-        {
-            get
-            {
-                return _ability.Name;
-            }
-            set
-            {
-                if (Name != value)
-                {
-                    _ability.Name = value;
-                    OnPropertyChanged("Name");
-                }
-            }
         }
 
         public uint Id
@@ -103,7 +94,55 @@ namespace NatStats
             }
         }
 
-        public String HitCheckBase
+        public string Name
+        {
+            get
+            {
+                return _ability.Name;
+            }
+            set
+            {
+                if (Name != value)
+                {
+                    _ability.Name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return _ability.Description;
+            }
+            set
+            {
+                if (Description != value)
+                {
+                    _ability.Description = value;
+                    OnPropertyChanged("Description");
+                }
+            }
+        }
+
+        public bool HasHitCheck
+        {
+            get
+            {
+                return _ability.HasHitCheck;
+            }
+            set
+            {
+                if (HasHitCheck != value)
+                {
+                    _ability.HasHitCheck = value;
+                    OnPropertyChanged("HasHitCheck");
+                }
+            }
+        }
+
+        public string HitCheckBase
         {
             get
             {
@@ -135,210 +174,274 @@ namespace NatStats
             }
         }
 
-        public String Effect1EffectType
+        public int HitCheckCrit
         {
             get
             {
-                return _ability.Effect1EffectType;
+                return _ability.HitCheckCrit;
             }
             set
             {
-                if (Effect1EffectType != value)
+                if (HitCheckCrit != value)
                 {
-                    _ability.Effect1EffectType = value;
-                    OnPropertyChanged("Effect1EffectType");
+                    _ability.HitCheckCrit = value;
+                    OnPropertyChanged("HitCheckCrit");
                 }
             }
         }
 
-        public int Effect1DiceCount
+        public bool HasEffect
         {
             get
             {
-                return _ability.Effect1DiceCount;
+                return _ability.HasEffect;
             }
             set
             {
-                if (Effect1DiceCount != value)
+                if (HasEffect != value)
                 {
-                    _ability.Effect1DiceCount = value;
-                    OnPropertyChanged("Effect1DiceCount");
+                    _ability.HasEffect = value;
+                    OnPropertyChanged("HasEffect");
                 }
             }
         }
 
-        public int Effect1DiceSides
+        public int EffectDiceCount
         {
             get
             {
-                return _ability.Effect1DiceSides;
+                return _ability.EffectDiceCount;
             }
             set
             {
-                if (Effect1DiceSides != value)
+                if (EffectDiceCount != value)
                 {
-                    _ability.Effect1DiceSides = value;
-                    OnPropertyChanged("Effect1DiceSides");
+                    _ability.EffectDiceCount = value;
+                    OnPropertyChanged("EffectDiceCount");
                 }
             }
         }
 
-        public String Effect1Base
+        public int EffectDiceSides
         {
             get
             {
-                return _ability.Effect1Base;
+                return _ability.EffectDiceSides;
             }
             set
             {
-                if (Effect1Base != value)
+                if (EffectDiceSides != value)
                 {
-                    _ability.Effect1Base = value;
-                    OnPropertyChanged("Effect1Base");
+                    _ability.EffectDiceSides = value;
+                    OnPropertyChanged("EffectDiceSides");
                 }
             }
         }
 
-        public int Effect1Bonus
+        public string EffectBase
         {
             get
             {
-                return _ability.Effect1Bonus;
+                return _ability.EffectBase;
             }
             set
             {
-                if (Effect1Bonus != value)
+                if (EffectBase != value)
                 {
-                    _ability.Effect1Bonus = value;
-                    OnPropertyChanged("Effect1Bonus");
+                    _ability.EffectBase = value;
+                    OnPropertyChanged("EffectBase");
                 }
             }
         }
 
-        public uint Effect1DamageTypeId
+        public int EffectBonus
         {
             get
             {
-                return _ability.Effect1DamageTypeId;
+                return _ability.EffectBonus;
             }
             set
             {
-                if (Effect1DamageTypeId != value)
+                if (EffectBonus != value)
                 {
-                    _ability.Effect1DamageTypeId = value;
-                    OnPropertyChanged("Effect1DamageTypeId");
+                    _ability.EffectBonus = value;
+                    OnPropertyChanged("EffectBonus");
                 }
             }
         }
 
-        public bool HasSecondaryEffect
+        public uint EffectDamageTypeId
         {
             get
             {
-                return _ability.HasSecondaryEffect;
+                return _ability.EffectDamageTypeId;
             }
             set
             {
-                if (HasSecondaryEffect != value)
+                if (EffectDamageTypeId != value)
                 {
-                    _ability.HasSecondaryEffect = value;
-                    OnPropertyChanged("HasSecondaryEffect");
+                    _ability.EffectDamageTypeId = value;
+                    OnPropertyChanged("EffectDamageTypeId");
                 }
             }
         }
 
-        public String Effect2EffectType
+        public bool EffectCanCrit
         {
             get
             {
-                return _ability.Effect2EffectType;
+                return _ability.EffectCanCrit;
             }
             set
             {
-                if (Effect2EffectType != value)
+                if (EffectCanCrit != value)
                 {
-                    _ability.Effect2EffectType = value;
-                    OnPropertyChanged("Effect2EffectType");
+                    _ability.EffectCanCrit = value;
+                    OnPropertyChanged("EffectCanCrit");
                 }
             }
         }
 
-        public int Effect2DiceCount
+        public int EffectCritDiceCount
         {
             get
             {
-                return _ability.Effect2DiceCount;
+                return _ability.EffectCritDiceCount;
             }
             set
             {
-                if (Effect2DiceCount != value)
+                if (EffectCritDiceCount != value)
                 {
-                    _ability.Effect2DiceCount = value;
-                    OnPropertyChanged("Effect2DiceCount");
+                    _ability.EffectCritDiceCount = value;
+                    OnPropertyChanged("EffectCritDiceCount");
                 }
             }
         }
 
-        public int Effect2DiceSides
+        public int EffectCritDiceSides
         {
             get
             {
-                return _ability.Effect2DiceSides;
+                return _ability.EffectCritDiceSides;
             }
             set
             {
-                if (Effect2DiceSides != value)
+                if (EffectCritDiceSides != value)
                 {
-                    _ability.Effect2DiceSides = value;
-                    OnPropertyChanged("Effect2DiceSides");
+                    _ability.EffectCritDiceSides = value;
+                    OnPropertyChanged("EffectCritDiceSides");
                 }
             }
         }
 
-        public String Effect2Base
+        public int EffectCritBonus
         {
             get
             {
-                return _ability.Effect2Base;
+                return _ability.EffectCritBonus;
             }
             set
             {
-                if (Effect2Base != value)
+                if (EffectCritBonus != value)
                 {
-                    _ability.Effect2Base = value;
-                    OnPropertyChanged("Effect2Base");
+                    _ability.EffectCritBonus = value;
+                    OnPropertyChanged("EffectCritBonus");
                 }
             }
         }
 
-        public int Effect2Bonus
+        public uint ConditionId
         {
             get
             {
-                return _ability.Effect2Bonus;
+                return _ability.ConditionId;
             }
             set
             {
-                if (Effect2Bonus != value)
+                if (ConditionId != value)
                 {
-                    _ability.Effect2Bonus = value;
-                    OnPropertyChanged("Effect2Bonus");
+                    _ability.ConditionId = value;
+                    OnPropertyChanged("ConditionId");
                 }
             }
         }
 
-        public uint Effect2DamageTypeId
+        public bool HasSavingThrow
         {
             get
             {
-                return _ability.Effect2DamageTypeId;
+                return _ability.HasSavingThrow;
             }
             set
             {
-                if (Effect2DamageTypeId != value)
+                if (HasSavingThrow != value)
                 {
-                    _ability.Effect2DamageTypeId = value;
-                    OnPropertyChanged("Effect2DamageTypeId");
+                    _ability.HasSavingThrow = value;
+                    OnPropertyChanged("HasSavingThrow");
+                }
+            }
+        }
+
+        public double PassDamageMod
+        {
+            get
+            {
+                return _ability.PassDamageMod;
+            }
+            set
+            {
+                if (PassDamageMod != value)
+                {
+                    _ability.PassDamageMod = value;
+                    OnPropertyChanged("PassDamageMod");
+                }
+            }
+        }
+
+        public bool PassApplyCondition
+        {
+            get
+            {
+                return _ability.PassApplyCondition;
+            }
+            set
+            {
+                if (PassApplyCondition != value)
+                {
+                    _ability.PassApplyCondition = value;
+                    OnPropertyChanged("PassApplyCondition");
+                }
+            }
+        }
+
+        public double FailDamageMod
+        {
+            get
+            {
+                return _ability.FailDamageMod;
+            }
+            set
+            {
+                if (FailDamageMod != value)
+                {
+                    _ability.FailDamageMod = value;
+                    OnPropertyChanged("FailDamageMod");
+                }
+            }
+        }
+
+        public bool FailApplyCondition
+        {
+            get
+            {
+                return _ability.FailApplyCondition;
+            }
+            set
+            {
+                if (FailApplyCondition != value)
+                {
+                    _ability.FailApplyCondition = value;
+                    OnPropertyChanged("FailApplyCondition");
                 }
             }
         }

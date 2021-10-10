@@ -20,6 +20,7 @@ namespace NatStats.Database
         public virtual DbSet<RollRecipient> RollRecipient { get; set; }
         public virtual DbSet<DamageType> DamageType { get; set; }
         public virtual DbSet<Ability> Ability { get; set; }
+        public virtual DbSet<Condition> Condition { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -172,37 +173,53 @@ namespace NatStats.Database
 
                 entity.Property(entity => entity.Name).IsRequired();
 
+                entity.Property(entity => entity.Description);
+
+                entity.Property(entity => entity.HasHitCheck).IsRequired();
+
                 entity.Property(entity => entity.HitCheckBase);
 
                 entity.Property(entity => entity.HitCheckBonus);
 
-                entity.Property(entity => entity.Effect1EffectType);
+                entity.Property(entity => entity.HitCheckCrit);
 
-                entity.Property(entity => entity.Effect1DiceCount);
+                entity.Property(entity => entity.EffectDiceCount);
 
-                entity.Property(entity => entity.Effect1DiceSides);
+                entity.Property(entity => entity.EffectDiceSides);
 
-                entity.Property(entity => entity.Effect1Base);
+                entity.Property(entity => entity.EffectBase);
 
-                entity.Property(entity => entity.Effect1Bonus);
+                entity.Property(entity => entity.EffectBonus);
 
-                entity.Property(entity => entity.Effect1DamageTypeId);
+                entity.Property(entity => entity.EffectDamageTypeId);
 
-                entity.Property(entity => entity.HasSecondaryEffect);
+                entity.Property(entity => entity.EffectCanCrit);
 
-                entity.Property(entity => entity.Effect2Base);
+                entity.Property(entity => entity.EffectCritDiceCount);
 
-                entity.Property(entity => entity.Effect2Bonus);
+                entity.Property(entity => entity.EffectCritDiceSides);
 
-                entity.Property(entity => entity.Effect2DiceCount);
+                entity.Property(entity => entity.EffectCritBonus);
 
-                entity.Property(entity => entity.Effect2DiceSides);
+                entity.Property(entity => entity.ConditionId).IsRequired();
 
-                entity.Property(entity => entity.Effect2Base);
+                entity.Property(entity => entity.HasSavingThrow).IsRequired();
 
-                entity.Property(entity => entity.Effect2Bonus);
+                entity.Property(entity => entity.PassDamageMod);
 
-                entity.Property(entity => entity.Effect2DamageTypeId);
+                entity.Property(entity => entity.PassApplyCondition);
+
+                entity.Property(entity => entity.FailDamageMod);
+
+                entity.Property(entity => entity.FailApplyCondition);
+            });
+
+
+            modelBuilder.Entity<Condition>(entity =>
+            {
+                entity.HasKey(entity => entity.Id);
+
+                entity.Property(entity => entity.Name);
             });
 
             OnModelCreatingPartial(modelBuilder);

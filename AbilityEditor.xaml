@@ -5,64 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="AbilityEditor" Height="450" Width="300">
-    <Grid HorizontalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4">
+        Title="AbilityEditor" Height="500" Width="300">
+    <StackPanel HorizontalAlignment="Center" Width="250">
+        <StackPanel>
             <TextBlock Text="Name" HorizontalAlignment="Center"/>
             <TextBox x:Name="Name"/>
         </StackPanel>
-
-        <TextBlock Text="Hit Check"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0,20,0,0"/>
-        <CheckBox Content="Cannot Miss" Grid.Column="0" Grid.Row="2"/>
-        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding BaseList}" x:Name="HitCheckBase" SelectedIndex="0"/>
-        <TextBlock Text="+" Grid.Column="2" Grid.Row="2"/>
-        <TextBox Grid.Column="3" Grid.Row="2" x:Name="HitCheckBonus" Text="0"/>
-
-        <TextBlock Text="Effect" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-        <CheckBox Content="Damage" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
-        <CheckBox Content="Healing" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" HorizontalAlignment="Center">
-            <TextBox x:Name="Effect1Count" Text="1"/>
-            <TextBlock Text="d"/>
-            <TextBox x:Name="Effect1Sides" Text="8"/>
-            <TextBlock Text="+"/>
-            <TextBox x:Name="Effect1Bonus" Text="0"/>
-            <ComboBox ItemsSource="{Binding BaseList}" x:Name="Effect1Base" SelectedIndex="0"/>
-            <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="Effect1DamageType" SelectedIndex="11"/>
+        <StackPanel>
+            <TextBlock Text="Description" HorizontalAlignment="Center"/>
+            <TextBox x:Name="Description" Height="50"/>
         </StackPanel>
 
-        <CheckBox Content="Secondary Effect" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-        <CheckBox Content="Damage" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
-        <CheckBox Content="Healing" Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="2"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4" HorizontalAlignment="Center">
-            <TextBox x:Name="Effect2Count" Text="1"/>
-            <TextBlock Text="d"/>
-            <TextBox x:Name="Effect2Sides" Text="8"/>
-            <TextBlock Text="+"/>
-            <TextBox x:Name="Effect2Bonus" Text="0"/>
-            <ComboBox ItemsSource="{Binding BaseList}" x:Name="Effect2Base" SelectedIndex="0"/>
-            <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="Effect2DamageType" SelectedIndex="11"/>
+        <CheckBox x:Name="HitCheckCheckBox" Content="Hit Check" Margin="0,20,0,0"/>
+        <StackPanel x:Name="HitCheckPanel" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox ItemsSource="{Binding BaseList}" x:Name="HitCheckBase" SelectedIndex="0"/>
+                <TextBlock Text="+" />
+                <TextBox x:Name="HitCheckBonus" Text="0"/>
+                <TextBlock Text="Crit:"/>
+                <TextBox x:Name="HitCheckCrit" Text="20"/>
+            </StackPanel>
         </StackPanel>
 
-        <Button Content="OK" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4" Click="OK_Click" Width="40" Margin="0,20,0,0"/>
-    </Grid>
+        <CheckBox x:Name="EffectCheckBox" Content="Effect" Margin="0,20,0,0"/>
+        <StackPanel x:Name="EffectPanel">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox x:Name="EffectCount" Text="1"/>
+                <TextBlock Text="d"/>
+                <TextBox x:Name="EffectSides" Text="8"/>
+                <TextBlock Text="+"/>
+                <ComboBox ItemsSource="{Binding BaseList}" x:Name="EffectBase" SelectedIndex="0"/>
+                <TextBlock Text="+"/>
+                <TextBox x:Name="EffectBonus" Text="0"/>
+                <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="EffectDamageType" SelectedIndex="11"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <CheckBox x:Name="CritCheckBox" Content="Crit" />
+                <TextBox x:Name="CritCount" Text="1"/>
+                <TextBlock Text="d"/>
+                <TextBox x:Name="CritSides" Text="8"/>
+                <TextBlock Text="+"/>
+                <TextBox x:Name="CritBonus" Text="0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <CheckBox x:Name="ConditionCheckBox" Content="Condition" Margin="0,20,0,0"/>
+        <ComboBox x:Name="Condition" ItemsSource="{Binding ConditionList}" SelectedIndex="0" HorizontalAlignment="Center"/>
+
+        <CheckBox x:Name="SavingThrowCheckBox" Content="Saving Throw" Margin="0,20,0,0"/>
+        <StackPanel x:Name="SavingThrowPanel">
+            <TextBlock Text="Pass" Margin="20,0,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Damage Mod" />
+                <TextBox x:Name="PassDamageMod" Text="0.5"/>
+                <CheckBox x:Name="PassApplyCondition" Content="Apply Condition" />
+            </StackPanel>
+            <TextBlock Text="Fail" Margin="20,0,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Damage Mod" />
+                <TextBox x:Name="FailDamageMod" Text="1.0"/>
+                <CheckBox x:Name="FailApplyCondition" Content="Apply Condition" />
+            </StackPanel>
+        </StackPanel>
+        
+        <Button Content="OK" Grid.Row="11" Click="OK_Click" Width="40" Margin="0,20,0,0"/>
+    </StackPanel>
 </Window>
