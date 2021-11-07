@@ -94,7 +94,7 @@ namespace NatStats
             var character = database.Character.Where(c => c.Id == ability.CharacterId).FirstOrDefault();
             string rtnStr = "";
 
-            if (ability.HasHitCheck)
+            if (ability.HasEffect && character != null)
             {
                 var skill = database.Skill.Where(s => s.Id == ability.EffectBaseId).FirstOrDefault();
                 var damage = database.DamageType.Where(d => d.Id == ability.EffectDamageTypeId).FirstOrDefault();
@@ -113,7 +113,10 @@ namespace NatStats
                     rtnStr += bonus;
                 }
 
-                rtnStr += " " + damage.Name;
+                if(!ability.EffectHeals)
+                    rtnStr += " " + damage.Name;
+                else
+                    rtnStr += " Healing";
             }
 
             return rtnStr;

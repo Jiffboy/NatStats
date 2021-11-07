@@ -48,6 +48,8 @@ namespace NatStats
                 DamageTypeList.Add(damage.Name);
             }
 
+            DamageTypeList.Add("Healing");
+
             foreach (var condition in _database.Condition.ToList())
             {
                 ConditionList.Add(condition.Name);
@@ -289,6 +291,21 @@ namespace NatStats
                 {
                     _ability.EffectDamageTypeId = value;
                     OnPropertyChanged("EffectDamageTypeId");
+                }
+            }
+        }
+        public bool EffectHeals
+        {
+            get
+            {
+                return _ability.EffectHeals;
+            }
+            set
+            {
+                if (EffectHeals != value)
+                {
+                    _ability.EffectHeals = value;
+                    OnPropertyChanged("EffectHeals");
                 }
             }
         }

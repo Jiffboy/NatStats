@@ -195,6 +195,8 @@ namespace NatStats.Database
 
                 entity.Property(entity => entity.EffectDamageTypeId);
 
+                entity.Property(entity => entity.EffectHeals);
+
                 entity.Property(entity => entity.EffectCanCrit);
 
                 entity.Property(entity => entity.EffectCritDiceCount);

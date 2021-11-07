@@ -20,6 +20,7 @@ namespace NatStats.Database
         public uint EffectBaseId { get; set; }
         public int EffectBonus { get; set; }
         public uint EffectDamageTypeId { get; set; }
+        public bool EffectHeals { get; set; }
         public bool EffectCanCrit { get; set; }
         public int EffectCritDiceCount { get; set; }
         public int EffectCritDiceSides { get; set; }

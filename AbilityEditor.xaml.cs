@@ -46,7 +46,10 @@ namespace NatStats
                     EffectBonus.Text = Convert.ToString(ability.EffectBonus);
                     EffectCount.Text = Convert.ToString(ability.EffectDiceCount);
                     EffectSides.Text = Convert.ToString(ability.EffectDiceSides);
-                    EffectDamageType.SelectedIndex = (int)ability.EffectDamageTypeId - 1;
+                    if (ability.EffectHeals)
+                        EffectDamageType.SelectedItem = "Healing";
+                    else
+                        EffectDamageType.SelectedIndex = (int)ability.EffectDamageTypeId - 1;
                     CritCheckBox.IsChecked = _abilityVM.EffectCanCrit;
                     CritCount.Text = Convert.ToString(ability.EffectCritDiceCount);
                     CritSides.Text = Convert.ToString(ability.EffectCritDiceSides);
@@ -96,7 +99,16 @@ namespace NatStats
                 _abilityVM.EffectBonus = Convert.ToInt32(EffectBonus.Text);
                 _abilityVM.EffectDiceCount = Convert.ToInt32(EffectCount.Text);
                 _abilityVM.EffectDiceSides = Convert.ToInt32(EffectSides.Text);
-                _abilityVM.EffectDamageTypeId = (uint)Convert.ToInt32(EffectDamageType.SelectedIndex) + 1;
+                if ((String)EffectDamageType.SelectedItem == "Healing")
+                {
+                    _abilityVM.EffectHeals = true;
+                    _abilityVM.EffectDamageTypeId = 0;
+                }
+                else
+                {
+                    _abilityVM.EffectHeals = false;
+                    _abilityVM.EffectDamageTypeId = (uint)Convert.ToInt32(EffectDamageType.SelectedIndex) + 1;
+                }
                 _abilityVM.EffectCanCrit = CritCheckBox.IsChecked.GetValueOrDefault();
                 _abilityVM.EffectCritDiceCount = Convert.ToInt32(CritCount.Text);
                 _abilityVM.EffectCritDiceSides = Convert.ToInt32(CritSides.Text);
