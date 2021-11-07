@@ -56,6 +56,7 @@ namespace NatStats
                 Charisma.Text = character.Charisma.ToString();
                 Level.Text = character.Level.ToString();
                 ProfBonus.Text = character.ProficiencyBonus.ToString();
+                CastingModifier.SelectedItem = db.Skill.Where(s => s.Id == character.CastingId).FirstOrDefault();
             }
         }
 
@@ -76,6 +77,7 @@ namespace NatStats
             _charVM.Charisma = Convert.ToInt32(Charisma.Text);
             _charVM.Level = Convert.ToInt32(Level.Text);
             _charVM.ProficiencyBonus = Convert.ToInt32(ProfBonus.Text);
+            _charVM.CastingId = ((Skill)CastingModifier.SelectedItem).Id;
 
             _charVM.SaveToDb();
             _addedSkills.Clear();

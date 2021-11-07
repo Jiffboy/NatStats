@@ -11,7 +11,8 @@ namespace NatStats
 {
     public class AbilityViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<String> BaseList { get; private set; }
+        public ObservableCollection<Skill> BaseList { get; private set; }
+        public ObservableCollection<String> DCList { get; private set; }
         public ObservableCollection<String> DamageTypeList { get; private set; }
         public ObservableCollection<String> ConditionList { get; private set; }
 
@@ -21,7 +22,8 @@ namespace NatStats
         public AbilityViewModel(uint characterId, uint abilityId)
         {
             _database = new DataBaseContext();
-            BaseList = new ObservableCollection<string>();
+            BaseList = new ObservableCollection<Skill>();
+            DCList = new ObservableCollection<string>();
             DamageTypeList = new ObservableCollection<string>();
             ConditionList = new ObservableCollection<string>();
 
@@ -31,10 +33,15 @@ namespace NatStats
                 _ability = new Ability { };
             }
 
+            DCList.Add("Casting Mod");
+
             foreach (var skill in _database.Skill.Where(s => s.Name == s.Base).ToList())
             {
-                BaseList.Add(skill.Name);
+                BaseList.Add(skill);
+                DCList.Add(skill.Name);
             }
+
+            DCList.Add("Flat Value");
 
             foreach (var damage in _database.DamageType.ToList())
             {
@@ -142,18 +149,18 @@ namespace NatStats
             }
         }
 
-        public string HitCheckBase
+        public uint HitCheckBaseId
         {
             get
             {
-                return _ability.HitCheckBase;
+                return _ability.HitCheckBaseId;
             }
             set
             {
-                if (HitCheckBase != value)
+                if (HitCheckBaseId != value)
                 {
-                    _ability.HitCheckBase = value;
-                    OnPropertyChanged("HitCheckBase");
+                    _ability.HitCheckBaseId = value;
+                    OnPropertyChanged("HitCheckBaseId");
                 }
             }
         }
@@ -238,18 +245,18 @@ namespace NatStats
             }
         }
 
-        public string EffectBase
+        public uint EffectBaseId
         {
             get
             {
-                return _ability.EffectBase;
+                return _ability.EffectBaseId;
             }
             set
             {
-                if (EffectBase != value)
+                if (EffectBaseId != value)
                 {
-                    _ability.EffectBase = value;
-                    OnPropertyChanged("EffectBase");
+                    _ability.EffectBaseId = value;
+                    OnPropertyChanged("EffectBaseId");
                 }
             }
         }
@@ -378,6 +385,70 @@ namespace NatStats
                 {
                     _ability.HasSavingThrow = value;
                     OnPropertyChanged("HasSavingThrow");
+                }
+            }
+        }
+
+        public uint SavingThrowBaseId
+        {
+            get
+            {
+                return _ability.SavingThrowBaseId;
+            }
+            set
+            {
+                if (SavingThrowBaseId != value)
+                {
+                    _ability.SavingThrowBaseId = value;
+                    OnPropertyChanged("SavingThrowBaseId");
+                }
+            }
+        }
+
+        public bool UsesCastingDC
+        {
+            get
+            {
+                return _ability.UsesCastingDC;
+            }
+            set
+            {
+                if (UsesCastingDC != value)
+                {
+                    _ability.UsesCastingDC = value;
+                    OnPropertyChanged("UsesCastingDC");
+                }
+            }
+        }
+
+        public uint DCSaveId
+        {
+            get
+            {
+                return _ability.DCSaveId;
+            }
+            set
+            {
+                if (DCSaveId != value)
+                {
+                    _ability.DCSaveId = value;
+                    OnPropertyChanged("DCSaveId");
+                }
+            }
+        }
+
+        public int FlatDC
+        {
+            get
+            {
+                return _ability.FlatDC;
+            }
+            set
+            {
+                if (FlatDC != value)
+                {
+                    _ability.FlatDC = value;
+                    OnPropertyChanged("FlatDC");
                 }
             }
         }

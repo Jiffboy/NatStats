@@ -18,7 +18,7 @@ namespace NatStats
 
             if (ability.HasHitCheck)
             {
-                var skill = database.Skill.Where(s => s.Name == ability.HitCheckBase).FirstOrDefault();
+                var skill = database.Skill.Where(s => s.Id == ability.HitCheckBaseId).FirstOrDefault();
                 var proficiency = database.Proficiency.Where(p => p.CharacterId == ability.CharacterId && p.SkillId == skill.Id).FirstOrDefault();
                 int val = 0;
 
@@ -40,7 +40,40 @@ namespace NatStats
             }
             else if(ability.HasSavingThrow)
             {
-                // TODO
+                if(ability.UsesCastingDC)
+                {
+                    var skill = database.Skill.Where(s => s.Id == character.CastingId).FirstOrDefault();
+                    if (skill != null)
+                    {
+                        var proficiency = database.Proficiency.Where(p => p.CharacterId == ability.CharacterId && p.SkillId == skill.Id).FirstOrDefault();
+                        int dc = 8;
+                        if(proficiency != null)
+                        {
+                            dc += character.ProficiencyBonus;
+                        }
+                        dc += CommonFuncs.GetBaseStat(character, skill.Name);
+                        rtnStr = "DC " + dc;
+                    }
+                }
+                else if(ability.DCSaveId != 0)
+                {
+                    var skill = database.Skill.Where(s => s.Id == ability.DCSaveId).FirstOrDefault();
+                    if (skill != null)
+                    {
+                        var proficiency = database.Proficiency.Where(p => p.CharacterId == ability.CharacterId && p.SkillId == skill.Id).FirstOrDefault();
+                        int dc = 8;
+                        if (proficiency != null)
+                        {
+                            dc += character.ProficiencyBonus;
+                        }
+                        dc += CommonFuncs.GetBaseStat(character, skill.Name);
+                        rtnStr = "DC " + dc;
+                    }
+                }
+                else if(ability.FlatDC != 0)
+                {
+                    rtnStr = "DC " + ability.FlatDC;
+                }
             }
 
             return rtnStr;
@@ -63,7 +96,7 @@ namespace NatStats
 
             if (ability.HasHitCheck)
             {
-                var skill = database.Skill.Where(s => s.Name == ability.EffectBase).FirstOrDefault();
+                var skill = database.Skill.Where(s => s.Id == ability.EffectBaseId).FirstOrDefault();
                 var damage = database.DamageType.Where(d => d.Id == ability.EffectDamageTypeId).FirstOrDefault();
                 int bonus = 0;
                 rtnStr = ability.EffectDiceCount + "d" + ability.EffectDiceSides;

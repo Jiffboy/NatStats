@@ -19,5 +19,6 @@ namespace NatStats.Database
         public int Charisma { get; set; }
         public int ProficiencyBonus { get; set; }
         public int Level { get; set; }
+        public uint CastingId { get; set; }
     }
 }

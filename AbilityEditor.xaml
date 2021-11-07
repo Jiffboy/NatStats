@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NatStats"
         mc:Ignorable="d"
-        Title="AbilityEditor" Height="500" Width="300">
+        Title="AbilityEditor" Height="520" Width="300">
     <StackPanel HorizontalAlignment="Center" Width="250">
         <StackPanel>
             <TextBlock Text="Name" HorizontalAlignment="Center"/>
@@ -19,7 +19,13 @@
         <CheckBox x:Name="HitCheckCheckBox" Content="Hit Check" Margin="0,20,0,0"/>
         <StackPanel x:Name="HitCheckPanel" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
-                <ComboBox ItemsSource="{Binding BaseList}" x:Name="HitCheckBase" SelectedIndex="0"/>
+                <ComboBox ItemsSource="{Binding BaseList}" x:Name="HitCheckBase" SelectedIndex="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="TabItem">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <TextBlock Text="+" />
                 <TextBox x:Name="HitCheckBonus" Text="0"/>
                 <TextBlock Text="Crit:"/>
@@ -34,7 +40,13 @@
                 <TextBlock Text="d"/>
                 <TextBox x:Name="EffectSides" Text="8"/>
                 <TextBlock Text="+"/>
-                <ComboBox ItemsSource="{Binding BaseList}" x:Name="EffectBase" SelectedIndex="0"/>
+                <ComboBox ItemsSource="{Binding BaseList}" x:Name="EffectBase" SelectedIndex="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="TabItem">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <TextBlock Text="+"/>
                 <TextBox x:Name="EffectBonus" Text="0"/>
                 <ComboBox ItemsSource="{Binding DamageTypeList}" x:Name="EffectDamageType" SelectedIndex="11"/>
@@ -54,6 +66,18 @@
 
         <CheckBox x:Name="SavingThrowCheckBox" Content="Saving Throw" Margin="0,20,0,0"/>
         <StackPanel x:Name="SavingThrowPanel">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <ComboBox x:Name="SavingThrowSave" ItemsSource="{Binding BaseList}" SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="TabItem">
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text=" VS " VerticalAlignment="Center"/>
+                <ComboBox x:Name="SavingThrowBaseMod" SelectedIndex="0" ItemsSource="{Binding DCList}" HorizontalAlignment="Center"/>
+                <TextBox x:Name="SavingThrowFlatDC" Width="20"/>
+                </StackPanel>
             <TextBlock Text="Pass" Margin="20,0,0,0"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Damage Mod" />

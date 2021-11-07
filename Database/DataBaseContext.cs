@@ -57,6 +57,8 @@ namespace NatStats.Database
                 entity.Property(e => e.ProficiencyBonus).IsRequired();
 
                 entity.Property(e => e.Level);
+
+                entity.Property(e => e.CastingId);
             });
 
             modelBuilder.Entity<Campaign>(entity =>
@@ -177,7 +179,7 @@ namespace NatStats.Database
 
                 entity.Property(entity => entity.HasHitCheck).IsRequired();
 
-                entity.Property(entity => entity.HitCheckBase);
+                entity.Property(entity => entity.HitCheckBaseId);
 
                 entity.Property(entity => entity.HitCheckBonus);
 
@@ -187,7 +189,7 @@ namespace NatStats.Database
 
                 entity.Property(entity => entity.EffectDiceSides);
 
-                entity.Property(entity => entity.EffectBase);
+                entity.Property(entity => entity.EffectBaseId);
 
                 entity.Property(entity => entity.EffectBonus);
 
@@ -204,6 +206,14 @@ namespace NatStats.Database
                 entity.Property(entity => entity.ConditionId).IsRequired();
 
                 entity.Property(entity => entity.HasSavingThrow).IsRequired();
+
+                entity.Property(entity => entity.SavingThrowBaseId);
+
+                entity.Property(entity => entity.UsesCastingDC);
+
+                entity.Property(entity => entity.DCSaveId);
+
+                entity.Property(entity => entity.FlatDC);
 
                 entity.Property(entity => entity.PassDamageMod);
 

@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using NatStats.Database;
 using System.Linq;
 
 namespace NatStats
@@ -42,7 +34,7 @@ namespace NatStats
                 if (ability.HasHitCheck)
                 {
                     HitCheckCheckBox.IsChecked = true;
-                    HitCheckBase.Text = ability.HitCheckBase;
+                    HitCheckBase.Text = _abilityVM.BaseList.Where(a => a.Id == ability.HitCheckBaseId).FirstOrDefault().Name;
                     HitCheckBonus.Text = Convert.ToString(ability.HitCheckBonus);
                     HitCheckCrit.Text = Convert.ToString(ability.HitCheckCrit);
                 }
@@ -50,7 +42,7 @@ namespace NatStats
                 if (ability.HasEffect)
                 {
                     EffectCheckBox.IsChecked = true;
-                    EffectBase.Text = ability.EffectBase;
+                    EffectBase.Text = _abilityVM.BaseList.Where(a => a.Id == ability.EffectBaseId).FirstOrDefault().Name;
                     EffectBonus.Text = Convert.ToString(ability.EffectBonus);
                     EffectCount.Text = Convert.ToString(ability.EffectDiceCount);
                     EffectSides.Text = Convert.ToString(ability.EffectDiceSides);
@@ -67,6 +59,14 @@ namespace NatStats
                 if (_abilityVM.HasSavingThrow)
                 {
                     SavingThrowCheckBox.IsChecked = true;
+                    SavingThrowSave.SelectedItem = _abilityVM.BaseList.Where(a => a.Id == ability.SavingThrowBaseId).FirstOrDefault();
+                    if (ability.DCSaveId != 0)
+                        SavingThrowBaseMod.SelectedItem = _abilityVM.BaseList.Where(a => a.Id == ability.DCSaveId).FirstOrDefault().Name;
+                    else if(ability.FlatDC != 0)
+                    {
+                        SavingThrowBaseMod.SelectedItem = "Flat Value";
+                        SavingThrowFlatDC.Text = Convert.ToString(ability.FlatDC);
+                    }
                     PassDamageMod.Text = Convert.ToString(ability.PassDamageMod);
                     PassApplyCondition.IsChecked = _abilityVM.PassApplyCondition;
                     FailDamageMod.Text = Convert.ToString(ability.FailDamageMod);
@@ -84,7 +84,7 @@ namespace NatStats
             _abilityVM.HasHitCheck = HitCheckCheckBox.IsChecked.GetValueOrDefault();
             if (_abilityVM.HasHitCheck)
             {
-                _abilityVM.HitCheckBase = HitCheckBase.Text;
+                _abilityVM.HitCheckBaseId = ((Skill)HitCheckBase.SelectedItem).Id;
                 _abilityVM.HitCheckBonus = Convert.ToInt32(HitCheckBonus.Text);
                 _abilityVM.HitCheckCrit = Convert.ToInt32(HitCheckCrit.Text);
             }
@@ -92,7 +92,7 @@ namespace NatStats
             _abilityVM.HasEffect = EffectCheckBox.IsChecked.GetValueOrDefault();
             if (_abilityVM.HasEffect)
             {
-                _abilityVM.EffectBase = EffectBase.Text;
+                _abilityVM.EffectBaseId = ((Skill)EffectBase.SelectedItem).Id;
                 _abilityVM.EffectBonus = Convert.ToInt32(EffectBonus.Text);
                 _abilityVM.EffectDiceCount = Convert.ToInt32(EffectCount.Text);
                 _abilityVM.EffectDiceSides = Convert.ToInt32(EffectSides.Text);
@@ -115,6 +115,25 @@ namespace NatStats
             _abilityVM.HasSavingThrow = SavingThrowCheckBox.IsChecked.GetValueOrDefault();
             if (_abilityVM.HasSavingThrow)
             {
+                _abilityVM.SavingThrowBaseId = ((Skill)SavingThrowSave.SelectedItem).Id;
+                if ((String)SavingThrowBaseMod.SelectedItem == "Casting Mod")
+                {
+                    _abilityVM.UsesCastingDC = true;
+                    _abilityVM.FlatDC = 0;
+                    _abilityVM.DCSaveId = 0;
+                }
+                else if ((String)SavingThrowBaseMod.SelectedItem == "Flat Value")
+                {
+                    _abilityVM.UsesCastingDC = false;
+                    _abilityVM.FlatDC = Convert.ToInt32(SavingThrowFlatDC.Text);
+                    _abilityVM.DCSaveId = 0;
+                }
+                else
+                {
+                    _abilityVM.UsesCastingDC = false;
+                    _abilityVM.FlatDC = 0;
+                    _abilityVM.DCSaveId = _abilityVM.BaseList.Where(a => a.Name == (String)SavingThrowBaseMod.SelectedItem).FirstOrDefault().Id;
+                }
                 _abilityVM.PassDamageMod = Convert.ToDouble(PassDamageMod.Text);
                 _abilityVM.PassApplyCondition = PassApplyCondition.IsChecked.GetValueOrDefault();
                 _abilityVM.FailDamageMod = Convert.ToDouble(FailDamageMod.Text);

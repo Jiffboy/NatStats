@@ -13,6 +13,7 @@ namespace NatStats
         public ObservableCollection<Class> ClassList { get; private set; }
         public ObservableCollection<Skill> UnusedSkillList { get; private set; }
         public ObservableCollection<Skill> ProficiencyList { get; private set; }
+        public ObservableCollection<Skill> CastingModifierList { get; private set; }
         public ObservableCollection<AbilityViewModel> Abilities { get; private set; }
 
         private Character _character;
@@ -24,6 +25,7 @@ namespace NatStats
             ClassList = new ObservableCollection<Class>();
             UnusedSkillList = new ObservableCollection<Skill>();
             ProficiencyList = new ObservableCollection<Skill>();
+            CastingModifierList = new ObservableCollection<Skill>();
             Abilities = new ObservableCollection<AbilityViewModel>();
 
             var classes = _database.Class.ToList();
@@ -36,6 +38,10 @@ namespace NatStats
             foreach (var skill in skills)
             {
                 UnusedSkillList.Add(skill);
+                if(skill.Name == skill.Base)
+                {
+                    CastingModifierList.Add(skill);
+                }
             }
 
             _character = _database.Character.Where(c => c.Id == characterId).FirstOrDefault();
@@ -305,6 +311,22 @@ namespace NatStats
                 {
                     _character.Level = value;
                     OnPropertyChanged("Level");
+                }
+            }
+        }
+
+        public uint CastingId
+        {
+            get
+            {
+                return _character.CastingId;
+            }
+            set
+            {
+                if (CastingId != value)
+                {
+                    _character.CastingId = value;
+                    OnPropertyChanged("CastingId");
                 }
             }
         }
